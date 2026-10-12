@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <header class="hero-section">
+        <h1 class="hero-title">New Arrivals.</h1>
+        <p class="hero-subtitle">The latest in premium materials and minimalist design.</p>
+    </header>
+
+    <div class="product-grid">
+        {% for product in products %}
+            <a href="{% url 'product_detail' product.id %}" class="product-card">
+                    <div class="image-container">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                </div>
+                
+                <div class="product-info">
+                    <p class="brand-subtitle">{{ product.brand.name }}</p>
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <div class="sizes-container">
+                        {% for size in product.sizes.all %}
+                            <span class="size-pill">{{ size.abbreviation }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <p style="color: var(--text-secondary); text-align: center; width: 100%; grid-column: 1 / -1;">No products available.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

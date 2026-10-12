@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="detail-container">
+        <!-- Left: Sticky Image -->
+        <div class="detail-image-wrapper">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+
+        <!-- Right: Scrollable Info -->
+        <div class="detail-info">
+            <p class="detail-brand">{{ product.brand.name }}</p>
+            <h1 class="detail-title">{{ product.name }}</h1>
+            
+            <p class="detail-description">
+                Crafted from premium materials to deliver a tailored fit and unparalleled comfort. Designed for the modern wardrobe.
+            </p>
+
+            <div class="size-selector">
+                <p class="selector-label">Select Size</p>
+                <div class="size-options">
+                    {% for size in product.sizes.all %}
+                        <div class="size-box">
+                            <span class="size-name">{{ size.name }}</span>
+                            <span class="size-abbr">{{ size.abbreviation }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button class="btn-buy">Add to Bag</button>
+            
+            <p class="stock-info">Released: {{ product.created_at|date:"F Y" }}</p>
+        </div>
+    </div>
+
+    <!-- Related Products Section -->
+    {% if related_products %}
+    <div class="related-section">
+        <h2 class="related-title">More from {{ product.brand.name }}</h2>
+        <div class="related-grid">
+            {% for rel_prod in related_products %}
+                <a href="{% url 'product_detail' rel_prod.id %}" class="rel-card">
+                    <img src="{{ rel_prod.image.url }}" alt="{{ rel_prod.name }}">
+                    <p class="rel-name">{{ rel_prod.name }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

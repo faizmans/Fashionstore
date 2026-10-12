@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Auto-rotating Poster Carousel -->
+    <section class="hero-carousel">
+        {% for poster in posters %}
+            <div class="carousel-slide {% if forloop.first %}active{% endif %}">
+                <img src="{{ poster.image.url }}" alt="{{ poster.title }}">
+            </div>
+        {% empty %}
+            <div class="carousel-placeholder">
+                <h2>Welcome to Kuzu.</h2>
+                <p>Add Poster Images in the Admin Panel.</p>
+            </div>
+        {% endfor %}
+        
+        <!-- Overlay Text -->
+        <div class="carousel-overlay">
+            <h1 class="overlay-title">Define Your Style.</h1>
+            <a href="{% url 'index' %}" class="btn-shop-now">Shop the Collection</a>
+        </div>
+    </section>
+
+    <!-- Category / Brand Grid -->
+    <section class="brand-categories">
+        <h2 class="section-heading">Explore by Brand</h2>
+        <div class="brand-grid">
+            {% for brand in brands %}
+                <a href="{% url 'index' %}" class="brand-card">
+                    {% if brand.cover_image %}
+                        <img src="{{ brand.cover_image }}" alt="{{ brand.name }}">
+                    {% else %}
+                        <div class="brand-fallback"></div>
+                    {% endif %}
+                    <div class="brand-card-overlay">
+                        <h3>{{ brand.name }}</h3>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- JavaScript for 5-Second Rotation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.carousel-slide');
+            if (slides.length > 1) {
+                let currentSlide = 0;
+                
+                setInterval(() => {
+                    // Remove active class from current slide
+                    slides[currentSlide].classList.remove('active');
+                    
+                    // Move to next slide, loop back to 0 if at the end
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    
+                    // Add active class to new slide
+                    slides[currentSlide].classList.add('active');
+                }, 5000); // 5000 ms = 5 seconds
+            }
+        });
+    </script>
+{% endblock %}

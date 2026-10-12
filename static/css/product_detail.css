@@ -1,0 +1,211 @@
+/* --- Main Layout --- */
+.detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    margin-bottom: 8rem;
+}
+
+/* Sticky Image Behavior (Desktop Only) */
+.detail-image-wrapper {
+    position: sticky;
+    top: 100px;
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: var(--surface-gray);
+}
+
+.detail-image-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    animation: fadeIn 1s var(--ease-out-expo);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.detail-info {
+    padding-top: 2rem;
+}
+
+.detail-brand {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.detail-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.detail-description {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+}
+
+/* --- Size Selector --- */
+.selector-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.size-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.size-box {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: transparent;
+}
+
+@media (hover: hover) {
+    .size-box:hover {
+        border-color: var(--text-primary);
+        background-color: var(--surface-gray);
+    }
+}
+
+/* Active State for JS later */
+.size-box:active {
+    transform: scale(0.95);
+}
+
+.size-name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.size-abbr {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+/* --- Premium Button --- */
+.btn-buy {
+    width: 100%;
+    background-color: var(--text-primary);
+    color: var(--bg-black);
+    border: none;
+    border-radius: 980px;
+    padding: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+@media (hover: hover) {
+    .btn-buy:hover {
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+}
+
+.btn-buy:active {
+    transform: scale(0.98);
+}
+
+.stock-info {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* --- Related Products --- */
+.related-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 4rem;
+}
+
+.related-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 2rem;
+}
+
+.related-grid {
+    display: grid;
+    /* Dynamically fits as many columns as possible, down to 140px wide */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 2rem 1rem;
+}
+
+.rel-card img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: transform 0.5s var(--ease-out-expo);
+}
+
+@media (hover: hover) {
+    .rel-card:hover img {
+        transform: scale(1.03);
+    }
+}
+
+.rel-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+/* --- Responsive Adjustments (Tablet & Mobile) --- */
+@media (max-width: 900px) {
+    .detail-container {
+        grid-template-columns: 1fr; /* Switch to vertical stack */
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+    
+    .detail-image-wrapper {
+        position: relative; /* Disable sticky scrolling on small screens */
+        top: 0;
+        border-radius: 16px;
+    }
+
+    .detail-info {
+        padding-top: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .size-options {
+        grid-template-columns: repeat(2, 1fr); /* Force exactly 2 side-by-side columns on tiny phones */
+        gap: 0.5rem;
+    }
+    
+    .related-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
