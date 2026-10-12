@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}?v=4">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}?v=8">
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,12 @@
     <section class="pro-hero-carousel">
         {% for poster in posters %}
             <div class="carousel-slide {% if forloop.first %}active{% endif %}">
-                <img src="{{ poster.image.url }}" alt="{{ poster.title }}" loading="lazy">
+                <!-- Blurred background layer (prevents black bars) -->
+                <img src="{{ poster.image.url }}" alt="" class="carousel-bg-blur" loading="lazy">
+                
+                <!-- Main uncropped image -->
+                <img src="{{ poster.image.url }}" alt="{{ poster.title }}" class="carousel-main-img" loading="lazy">
+                
                 <div class="carousel-gradient-overlay"></div>
             </div>
         {% empty %}
@@ -30,30 +35,50 @@
             </div>
         </div>
     </section>
-
-    <!-- Performance Details (Features) -->
+<!-- Premium Apparel Details -->
     <section class="pro-features">
         <div class="feature-item">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h3>PREMIUM TECH</h3>
-            <p>Advanced moisture-wicking fabrics designed to keep you cool under pressure.</p>
+            <div class="feature-icon-wrapper">
+                <!-- Feather Icon (Represents lightweight/soft fabric) -->
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="16" y1="8" x2="2" y2="22" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="17.5" y1="15" x2="9" y2="15" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>SIGNATURE FABRICS</h3>
+            <p>Crafted from ultra-soft, breathable materials that drape flawlessly and feel incredible against the skin.</p>
         </div>
+        
         <div class="feature-item">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10" stroke-linecap="round"/>
-                <path d="M12 6v6l4 2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h3>BUILT TO LAST</h3>
-            <p>Reinforced stitching and durable materials that withstand the toughest workouts.</p>
+            <div class="feature-icon-wrapper">
+                <!-- Scissors Icon (Represents tailoring/craftsmanship) -->
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                    <circle cx="6" cy="6" r="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="6" cy="18" r="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="20" y1="4" x2="8.12" y2="15.88" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="14.47" y1="14.48" x2="20" y2="20" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="8.12" y1="8.12" x2="12" y2="12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>EXPERT TAILORING</h3>
+            <p>Meticulous stitching and premium detailing designed for everyday elegance and enduring style.</p>
         </div>
+        
         <div class="feature-item">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
-                <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h3>PERFECT FIT</h3>
-            <p>Engineered with adaptive compression to support your muscles dynamically.</p>
+            <div class="feature-icon-wrapper">
+                <!-- Abstract Diamond/Shape (Represents structure/fit) -->
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="7.5 4.21 12 6.81 16.5 4.21" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="7.5 19.79 7.5 14.6 3 12" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="21 12 16.5 14.6 16.5 19.79" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>MODERN SILHOUETTE</h3>
+            <p>Cut to flatter. Our structured yet comfortable designs elevate your look for any occasion.</p>
         </div>
     </section>
 

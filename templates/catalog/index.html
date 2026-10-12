@@ -2,19 +2,19 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}?v=12">
 {% endblock %}
 
 {% block content %}
-    <!-- Bold Athletic Hero -->
+    <!-- High-Fashion Editorial Hero -->
     <header class="pro-hero">
-        <h1 class="pro-hero-title">ALL <span class="volt-text">GEAR.</span></h1>
-        <p class="pro-hero-subtitle">Engineered to push your limits. Shop the latest drops.</p>
+        <h1 class="pro-hero-title">THE <span class="volt-text">CURATION.</span></h1>
+        <p class="pro-hero-subtitle">Impeccable tailoring meets modern design. Explore our latest seasonal arrivals.</p>
     </header>
 
     <!-- Results Counter -->
     <div class="pro-filter-bar">
-        <span class="results-count">{{ products|length }} Items Found</span>
+        <span class="results-count">{{ products|length }} Pieces Available</span>
     </div>
 
     <!-- Product Grid -->
@@ -24,7 +24,10 @@
                 
                 <div class="pro-image-container">
                     {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                        <!-- Blurred background layer (prevents harsh borders) -->
+                        <img src="{{ product.image.url }}" alt="" class="pro-bg-blur" aria-hidden="true" loading="lazy">
+                        <!-- Main uncropped image -->
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="pro-main-img" loading="lazy">
                     {% else %}
                         <div class="pro-image-fallback"></div>
                     {% endif %}
@@ -51,8 +54,8 @@
             </a>
         {% empty %}
             <div class="pro-empty-state">
-                <h2>NO GEAR AVAILABLE.</h2>
-                <p>Check back later for new drops.</p>
+                <h2>THE VAULT IS EMPTY.</h2>
+                <p>Check back soon for our upcoming seasonal collections.</p>
             </div>
         {% endfor %}
     </div>

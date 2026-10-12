@@ -1,14 +1,14 @@
-/* --- Pro Hero Section --- */
+/* --- Premium Hero Section --- */
 .pro-hero {
     text-align: left;
-    padding: 2rem 0 4rem;
+    padding: 3rem 0 4rem;
     border-bottom: 1px solid var(--border-subtle);
     margin-bottom: 2rem;
 }
 
 .pro-hero-title {
     font-family: var(--font-display);
-    font-size: clamp(4rem, 10vw, 8rem);
+    font-size: clamp(3.5rem, 8vw, 7rem);
     text-transform: uppercase;
     line-height: 0.9;
     letter-spacing: 2px;
@@ -23,7 +23,9 @@
 .pro-hero-subtitle {
     font-size: clamp(1rem, 2vw, 1.2rem);
     color: var(--text-secondary);
-    font-weight: 500;
+    font-weight: 400;
+    max-width: 600px;
+    line-height: 1.6;
 }
 
 /* --- Filter Bar --- */
@@ -37,19 +39,20 @@
 
 .results-count {
     font-size: 0.9rem;
-    font-weight: 700;
+    font-weight: 500;
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 
-/* --- Pro Product Grid (Fixed) --- */
+/* --- Fluid Product Grid --- */
 .pro-product-grid {
     display: grid;
-    /* Forces exactly 4 columns on large desktop, wrapping down seamlessly */
+    /* Automatically creates columns based on screen width */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 4rem 2rem;
     width: 100%;
+    margin-bottom: 6rem;
 }
 
 /* --- Product Cards --- */
@@ -58,9 +61,9 @@
     flex-direction: column;
     cursor: pointer;
     text-decoration: none;
-    animation: slideUpFade 0.6s var(--ease-power) forwards;
+    animation: slideUpFade 0.8s var(--ease-power) forwards;
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(30px);
 }
 
 @keyframes slideUpFade {
@@ -70,68 +73,78 @@
     }
 }
 
-/* --- Image Container (Fixed) --- */
+/* --- Image Container (Cinematic Blur Setup) --- */
 .pro-image-container {
     width: 100%;
-    aspect-ratio: 4/5; /* Forces identical card heights */
-    background-color: transparent; 
-    position: relative; /* Crucial for the overlay to work */
-    overflow: hidden; /* Hides the hover overlay until hovered */
+    aspect-ratio: 4/5;
+    background-color: var(--surface-dark);
+    position: relative;
+    overflow: hidden;
     margin-bottom: 1.5rem;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
-.pro-image-container img {
+/* Blurred Background Layer */
+.pro-bg-blur {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* <--- Changed from cover to contain */
-    object-position: center;
-    transition: transform 0.8s var(--ease-power), filter 0.4s ease;
+    object-fit: cover;
+    filter: blur(25px) brightness(0.25);
+    transform: scale(1.1);
+    z-index: 0;
 }
 
-
+/* Main Uncropped Image */
+.pro-main-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Prevents cropping */
+    padding: 1.5rem; /* Breathing room inside the card */
+    z-index: 1;
+    transition: transform 0.8s var(--ease-power);
+}
 
 .pro-image-fallback {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #111, #222);
+    background: linear-gradient(45deg, #111, #1a1a1a);
+    z-index: 0;
 }
 
-/* Quick View Overlay (Slides up on hover) */
+/* Quick View Overlay */
 .pro-quick-view {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--volt-green);
+    background-color: rgba(206, 255, 0, 0.95);
     color: var(--bg-black);
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-weight: 900;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    transform: translateY(100%); /* Hides it off the bottom edge */
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    transform: translateY(100%);
     transition: transform 0.4s var(--ease-power);
     z-index: 10;
 }
 
 /* Desktop Hover Effects */
 @media (hover: hover) {
-    .pro-product-card:hover .pro-image-container img {
+    .pro-product-card:hover .pro-main-img {
         transform: scale(1.08);
-        filter: brightness(0.7);
     }
     
     .pro-product-card:hover .pro-quick-view {
-        transform: translateY(0); /* Slides up on hover */
+        transform: translateY(0);
     }
 }
 
@@ -143,23 +156,23 @@
 }
 
 .pro-brand-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 900;
-    color: var(--volt-green);
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
 }
 
 .pro-product-name {
     font-family: var(--font-display);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     line-height: 1.1;
     margin-bottom: 1rem;
     color: var(--text-primary);
-    transition: color 0.3s ease;
 }
 
 .pro-sizes-container {
@@ -170,17 +183,20 @@
 
 .pro-size-pill {
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 500;
     color: var(--text-secondary);
-    background-color: var(--surface-dark);
-    padding: 0.4rem 0.8rem;
+    background-color: transparent;
+    padding: 0.3rem 0.6rem;
     border: 1px solid var(--border-subtle);
     border-radius: 2px;
     transition: all 0.3s ease;
 }
 
-/* Hover effect for sizes */
+/* Hover highlights */
 @media (hover: hover) {
+    .pro-product-card:hover .pro-brand-subtitle {
+        color: var(--volt-green);
+    }
     .pro-product-card:hover .pro-size-pill {
         border-color: var(--text-secondary);
         color: var(--text-primary);
@@ -191,16 +207,22 @@
 .pro-empty-state {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 5rem 0;
+    padding: 6rem 5%;
     background-color: var(--surface-dark);
-    border: 1px dashed var(--border-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
 }
 
 .pro-empty-state h2 {
     font-family: var(--font-display);
-    font-size: 3rem;
-    color: var(--text-secondary);
+    font-size: 2.5rem;
+    color: var(--text-primary);
     margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.pro-empty-state p {
+    color: var(--text-secondary);
 }
 
 /* --- Staggered Loading Animations --- */
@@ -213,22 +235,38 @@
 .pro-product-card:nth-child(7) { animation-delay: 0.4s; }
 .pro-product-card:nth-child(8) { animation-delay: 0.45s; }
 
-/* --- Mobile Specific Tweaks --- */
+/* --- Mobile / Tablet Adjustments --- */
 @media (max-width: 768px) {
     .pro-hero {
         padding: 1rem 0 2rem;
     }
     
     .pro-product-grid {
+        /* Forces slightly smaller columns on tablets so it fits 2 side-by-side */
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 3rem 1rem;
     }
     
-    /* On mobile touch devices, always show the quick view bar slightly peeking */
+    .pro-main-img {
+        padding: 1rem;
+    }
+    
+    /* Touch devices: Always show a subtle hint of the Quick View bar */
     @media (hover: none) {
         .pro-quick-view {
             transform: translateY(0);
-            background-color: rgba(206, 255, 0, 0.9);
+            background-color: rgba(206, 255, 0, 0.1);
+            color: var(--volt-green);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(206, 255, 0, 0.2);
             padding: 0.8rem;
         }
+    }
+}
+
+@media (max-width: 480px) {
+    .pro-product-grid {
+        /* On very small phones, drop to a single large column */
+        grid-template-columns: 1fr;
     }
 }

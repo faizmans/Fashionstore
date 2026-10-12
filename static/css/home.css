@@ -1,53 +1,68 @@
 /* --- Edge-to-Edge Hero Carousel --- */
 .pro-hero-carousel {
     position: relative;
-    /* Forces the element to bleed out of the container to full screen width */
     width: 100vw;
-    height: 80vh;
+    height: clamp(500px, 80vh, 900px); /* Smart height scaling */
     left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    margin-top: -2rem; /* Pulls up slightly to integrate with nav */
-    background-color: var(--surface-dark);
+    transform: translateX(-50%);
+    margin-top: -2rem; 
+    background-color: var(--bg-black);
     overflow: hidden;
     margin-bottom: 4rem;
 }
 
 .carousel-slide {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     opacity: 0;
-    transition: opacity 1.5s ease-in-out, transform 5s ease-out;
-    transform: scale(1.05); /* Slight zoom out effect during crossfade */
+    transition: opacity 1.5s ease-in-out;
     z-index: 1;
 }
 
 .carousel-slide.active {
     opacity: 1;
-    transform: scale(1);
     z-index: 2;
 }
 
-.carousel-slide img {
+/* The Blurred Background (Prevents black bars) */
+.carousel-bg-blur {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 25%;
+    filter: blur(40px) brightness(0.3);
+    transform: scale(1.1); /* Prevents white edges from the blur */
+    z-index: 0;
+}
+
+/* The Main Image (Zero cropping) */
+.carousel-main-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Forces entire image to be visible */
+    object-position: center;
+    z-index: 1;
+    transition: transform 6s ease-out;
+}
+
+.carousel-slide.active .carousel-main-img {
+    transform: scale(1.03); /* Subtle zoom effect */
 }
 
 .carousel-gradient-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.4) 40%, rgba(5,5,5,0.1) 100%);
+    background: linear-gradient(to top, var(--bg-black) 0%, rgba(5,5,5,0.4) 30%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
 }
 
 .carousel-overlay {
     position: absolute;
-    bottom: 15%;
+    bottom: 10%;
     left: 5%;
     z-index: 10;
     max-width: 800px;
@@ -66,7 +81,7 @@
 
 .overlay-title {
     font-family: var(--font-display);
-    font-size: clamp(4rem, 10vw, 8rem);
+    font-size: clamp(3.5rem, 8vw, 8rem);
     line-height: 0.9;
     letter-spacing: 1px;
     color: var(--text-primary);
@@ -79,7 +94,7 @@
 }
 
 .overlay-subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-size: clamp(1rem, 2vw, 1.2rem);
     color: var(--text-secondary);
     margin-bottom: 2rem;
     font-weight: 500;
@@ -106,56 +121,84 @@
     }
 }
 
-.carousel-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: var(--surface-dark);
-    color: var(--text-secondary);
-}
-
-/* --- Features Section --- */
+/* --- Elevated Features Section --- */
 .pro-features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 3rem;
-    padding: 2rem 0 6rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem 5% 6rem;
     border-bottom: 1px solid var(--border-subtle);
+    background-color: var(--bg-black);
 }
 
 .feature-item {
-    text-align: center;
-    padding: 2rem;
-    background-color: var(--surface-dark);
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    text-align: left; /* Shifted from center to left for a boutique editorial feel */
+    padding: 3rem 2.5rem;
+    background-color: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    transition: all 0.4s var(--ease-power);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle luxury gradient sweep on hover */
+.feature-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(206, 255, 0, 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
 }
 
 @media (hover: hover) {
     .feature-item:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px);
+        border-color: rgba(206, 255, 0, 0.3); /* Subtle volt highlight */
+    }
+    .feature-item:hover::before {
+        opacity: 1;
+    }
+    .feature-item:hover .feature-icon-wrapper {
+        border-color: var(--volt-green);
+        background-color: rgba(206, 255, 0, 0.1);
     }
 }
 
-.feature-item svg {
-    margin-bottom: 1.5rem;
+.feature-icon-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background-color: var(--surface-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-subtle);
+    transition: all 0.4s ease;
 }
 
 .feature-item h3 {
+    position: relative;
+    z-index: 1;
     font-family: var(--font-display);
-    font-size: 1.5rem;
-    letter-spacing: 1px;
+    font-size: 1.8rem;
+    letter-spacing: 1.5px;
     margin-bottom: 1rem;
     color: var(--text-primary);
 }
 
 .feature-item p {
+    position: relative;
+    z-index: 1;
     color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    font-weight: 400;
 }
 
 /* --- Motivational Quote Banner --- */
@@ -163,7 +206,7 @@
     position: relative;
     width: 100vw;
     left: 50%;
-    transform: translateX(-50%); /* Fixes the right-side glitch */
+    transform: translateX(-50%);
     background-color: var(--surface-lighter);
     padding: 6rem 5%;
     text-align: center;
@@ -185,7 +228,7 @@
     transform: translateX(-50%);
     font-family: var(--font-display);
     font-size: 8rem;
-    color: rgba(206, 255, 0, 0.1); /* Faded volt green */
+    color: rgba(206, 255, 0, 0.05); 
     line-height: 1;
     z-index: 0;
 }
@@ -254,7 +297,7 @@
 .pro-brand-card {
     display: block;
     position: relative;
-    border-radius: 4px;
+    border-radius: 8px;
     overflow: hidden;
     background-color: var(--surface-dark);
 }
@@ -262,18 +305,19 @@
 .brand-image-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 16/10;
+    aspect-ratio: 16/12;
     overflow: hidden;
 }
 
 .brand-image-wrapper img {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Prevents shoe cropping */
+    padding: 2rem 2rem 4rem 2rem; /* Creates breathing room inside the box */
     transition: transform 0.8s var(--ease-power);
+    z-index: 1;
 }
 
 .brand-fallback {
@@ -285,7 +329,8 @@
 .brand-overlay-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0.2) 60%, transparent 100%);
+    background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, transparent 60%);
+    z-index: 2;
 }
 
 .brand-info {
@@ -293,11 +338,10 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 2rem;
+    padding: 1.5rem;
     z-index: 10;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
 .brand-info h3 {
@@ -305,7 +349,7 @@
     font-size: 2.5rem;
     letter-spacing: 1px;
     color: var(--text-primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
 .shop-link {
@@ -330,8 +374,13 @@
 
 /* --- Mobile Specific Tweaks --- */
 @media (max-width: 768px) {
+    .pro-hero-carousel {
+        height: 70vh;
+    }
+    
     .carousel-overlay {
-        bottom: 10%;
+        bottom: 5%;
+        text-align: left;
     }
     
     .section-header {
@@ -342,5 +391,9 @@
     
     .pro-quote-banner {
         padding: 4rem 5%;
+    }
+    
+    .pro-brand-grid {
+        grid-template-columns: 1fr;
     }
 }
