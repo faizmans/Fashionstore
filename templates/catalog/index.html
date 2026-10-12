@@ -2,36 +2,58 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}?v=2">
 {% endblock %}
 
 {% block content %}
-    <header class="hero-section">
-        <h1 class="hero-title">New Arrivals.</h1>
-        <p class="hero-subtitle">The latest in premium materials and minimalist design.</p>
+    <!-- Bold Athletic Hero -->
+    <header class="pro-hero">
+        <h1 class="pro-hero-title">ALL <span class="volt-text">GEAR.</span></h1>
+        <p class="pro-hero-subtitle">Engineered to push your limits. Shop the latest drops.</p>
     </header>
 
-    <div class="product-grid">
+    <!-- Results Counter -->
+    <div class="pro-filter-bar">
+        <span class="results-count">{{ products|length }} Items Found</span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="pro-product-grid">
         {% for product in products %}
-            <a href="{% url 'product_detail' product.id %}" class="product-card">
-                    <div class="image-container">
+            <a href="{% url 'product_detail' product.id %}" class="pro-product-card">
+                
+                <div class="pro-image-container">
                     {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% else %}
+                        <div class="pro-image-fallback"></div>
                     {% endif %}
+                    
+                    <!-- Slide-up overlay on hover -->
+                    <div class="pro-quick-view">
+                        <span>VIEW DETAILS</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
                 
-                <div class="product-info">
-                    <p class="brand-subtitle">{{ product.brand.name }}</p>
-                    <h3 class="product-name">{{ product.name }}</h3>
-                    <div class="sizes-container">
+                <div class="pro-product-info">
+                    <div class="pro-brand-subtitle">{{ product.brand.name }}</div>
+                    <h3 class="pro-product-name">{{ product.name }}</h3>
+                    <div class="pro-sizes-container">
                         {% for size in product.sizes.all %}
-                            <span class="size-pill">{{ size.abbreviation }}</span>
+                            <span class="pro-size-pill">{{ size.abbreviation }}</span>
                         {% endfor %}
                     </div>
                 </div>
+                
             </a>
         {% empty %}
-            <p style="color: var(--text-secondary); text-align: center; width: 100%; grid-column: 1 / -1;">No products available.</p>
+            <div class="pro-empty-state">
+                <h2>NO GEAR AVAILABLE.</h2>
+                <p>Check back later for new drops.</p>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

@@ -2,43 +2,91 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}?v=4">
 {% endblock %}
 
 {% block content %}
-    <!-- Auto-rotating Poster Carousel -->
-    <section class="hero-carousel">
+    <!-- Auto-rotating Edge-to-Edge Carousel -->
+    <section class="pro-hero-carousel">
         {% for poster in posters %}
             <div class="carousel-slide {% if forloop.first %}active{% endif %}">
-                <img src="{{ poster.image.url }}" alt="{{ poster.title }}">
+                <img src="{{ poster.image.url }}" alt="{{ poster.title }}" loading="lazy">
+                <div class="carousel-gradient-overlay"></div>
             </div>
         {% empty %}
             <div class="carousel-placeholder">
-                <h2>Welcome to Kuzu.</h2>
-                <p>Add Poster Images in the Admin Panel.</p>
+                <h2>NO CAMPAIGN LOADED</h2>
+                <p>Upload Poster Images in the Admin Panel.</p>
             </div>
         {% endfor %}
         
-        <!-- Overlay Text -->
+        <!-- Hero Overlay Text -->
         <div class="carousel-overlay">
-            <h1 class="overlay-title">Define Your Style.</h1>
-            <a href="{% url 'index' %}" class="btn-shop-now">Shop the Collection</a>
+            <span class="pro-badge">NEW SEASON</span>
+            <h1 class="overlay-title">DEFY <span class="volt-text">LIMITS.</span></h1>
+            <p class="overlay-subtitle">Pro-grade gear engineered for peak performance.</p>
+            <div class="hero-actions">
+                <a href="{% url 'index' %}" class="btn-pro-primary">SHOP ALL GEAR</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Details (Features) -->
+    <section class="pro-features">
+        <div class="feature-item">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>PREMIUM TECH</h3>
+            <p>Advanced moisture-wicking fabrics designed to keep you cool under pressure.</p>
+        </div>
+        <div class="feature-item">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10" stroke-linecap="round"/>
+                <path d="M12 6v6l4 2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>BUILT TO LAST</h3>
+            <p>Reinforced stitching and durable materials that withstand the toughest workouts.</p>
+        </div>
+        <div class="feature-item">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>PERFECT FIT</h3>
+            <p>Engineered with adaptive compression to support your muscles dynamically.</p>
+        </div>
+    </section>
+
+    <!-- Motivational Quote Banner -->
+    <section class="pro-quote-banner">
+        <div class="quote-content">
+            <span class="quote-mark">"</span>
+            <h2>SUCCESS ISN'T GIVEN. <br>IT'S <span class="volt-text">EARNED.</span></h2>
+            <p>- KUZU PRO ATHLETES</p>
         </div>
     </section>
 
     <!-- Category / Brand Grid -->
-    <section class="brand-categories">
-        <h2 class="section-heading">Explore by Brand</h2>
-        <div class="brand-grid">
+    <section class="pro-brand-categories">
+        <div class="section-header">
+            <h2 class="pro-section-title">CHOOSE YOUR <span class="volt-text">WEAPON.</span></h2>
+            <a href="{% url 'index' %}" class="btn-view-all">VIEW ALL</a>
+        </div>
+        
+        <div class="pro-brand-grid">
             {% for brand in brands %}
-                <a href="{% url 'index' %}" class="brand-card">
-                    {% if brand.cover_image %}
-                        <img src="{{ brand.cover_image }}" alt="{{ brand.name }}">
-                    {% else %}
-                        <div class="brand-fallback"></div>
-                    {% endif %}
-                    <div class="brand-card-overlay">
+                <a href="{% url 'index' %}" class="pro-brand-card">
+                    <div class="brand-image-wrapper">
+                        {% if brand.cover_image %}
+                            <img src="{{ brand.cover_image }}" alt="{{ brand.name }}" loading="lazy">
+                        {% else %}
+                            <div class="brand-fallback"></div>
+                        {% endif %}
+                        <div class="brand-overlay-gradient"></div>
+                    </div>
+                    <div class="brand-info">
                         <h3>{{ brand.name }}</h3>
+                        <span class="shop-link">SHOP BRAND &rarr;</span>
                     </div>
                 </a>
             {% endfor %}
@@ -53,13 +101,8 @@
                 let currentSlide = 0;
                 
                 setInterval(() => {
-                    // Remove active class from current slide
                     slides[currentSlide].classList.remove('active');
-                    
-                    // Move to next slide, loop back to 0 if at the end
                     currentSlide = (currentSlide + 1) % slides.length;
-                    
-                    // Add active class to new slide
                     slides[currentSlide].classList.add('active');
                 }, 5000); // 5000 ms = 5 seconds
             }

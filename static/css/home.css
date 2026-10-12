@@ -1,13 +1,17 @@
-/* --- Hero Carousel --- */
-.hero-carousel {
+/* --- Edge-to-Edge Hero Carousel --- */
+.pro-hero-carousel {
     position: relative;
+    /* Forces the element to bleed out of the container to full screen width */
     width: 100vw;
-    height: 85vh;
-    margin-left: calc(-50vw + 50%); /* Bleeds out of the container to full width */
-    margin-top: -6rem; /* Pulls it up under the transparent navbar */
+    height: 80vh;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: -2rem; /* Pulls up slightly to integrate with nav */
+    background-color: var(--surface-dark);
     overflow: hidden;
-    background-color: var(--bg-black);
-    margin-bottom: 6rem;
+    margin-bottom: 4rem;
 }
 
 .carousel-slide {
@@ -17,12 +21,14 @@
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 1.5s ease-in-out; /* Smooth Apple-style crossfade */
+    transition: opacity 1.5s ease-in-out, transform 5s ease-out;
+    transform: scale(1.05); /* Slight zoom out effect during crossfade */
     z-index: 1;
 }
 
 .carousel-slide.active {
     opacity: 1;
+    transform: scale(1);
     z-index: 2;
 }
 
@@ -30,41 +36,73 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 20%;
+    object-position: center 25%;
+}
+
+.carousel-gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.4) 40%, rgba(5,5,5,0.1) 100%);
 }
 
 .carousel-overlay {
     position: absolute;
-    bottom: 10%;
+    bottom: 15%;
     left: 5%;
     z-index: 10;
-    text-align: left;
+    max-width: 800px;
+}
+
+.pro-badge {
+    display: inline-block;
+    background-color: var(--volt-green);
+    color: var(--bg-black);
+    font-size: 0.8rem;
+    font-weight: 900;
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
 }
 
 .overlay-title {
-    font-size: clamp(3rem, 8vw, 5rem);
-    font-weight: 700;
-    letter-spacing: -2px;
-    color: var(--accent-white);
-    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    margin-bottom: 1.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.9;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
 }
 
-.btn-shop-now {
+.volt-text {
+    color: var(--volt-green);
+}
+
+.overlay-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-weight: 500;
+    max-width: 500px;
+}
+
+/* Primary Button */
+.btn-pro-primary {
     display: inline-block;
-    background-color: var(--accent-white);
+    background-color: var(--text-primary);
     color: var(--bg-black);
-    padding: 1rem 2rem;
-    border-radius: 980px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    padding: 1rem 2.5rem;
+    text-transform: uppercase;
+    transition: all 0.3s var(--ease-power);
 }
 
 @media (hover: hover) {
-    .btn-shop-now:hover {
-        transform: scale(1.05);
-        background-color: #e0e0e0;
+    .btn-pro-primary:hover {
+        background-color: var(--volt-green);
+        transform: translateY(-3px);
     }
 }
 
@@ -75,78 +113,234 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: var(--surface-gray);
+    background: var(--surface-dark);
     color: var(--text-secondary);
 }
 
-/* --- Brand Categories Section --- */
-.section-heading {
-    font-size: clamp(2rem, 4vw, 2.5rem);
-    font-weight: 600;
-    letter-spacing: -1px;
-    margin-bottom: 3rem;
-    text-align: center;
+/* --- Features Section --- */
+.pro-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    padding: 2rem 0 6rem;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
-.brand-grid {
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--surface-dark);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+@media (hover: hover) {
+    .feature-item:hover {
+        transform: translateY(-5px);
+    }
+}
+
+.feature-item svg {
+    margin-bottom: 1.5rem;
+}
+
+.feature-item h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.feature-item p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* --- Motivational Quote Banner --- */
+.pro-quote-banner {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%); /* Fixes the right-side glitch */
+    background-color: var(--surface-lighter);
+    padding: 6rem 5%;
+    text-align: center;
+    margin: 4rem 0;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.quote-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.quote-mark {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-size: 8rem;
+    color: rgba(206, 255, 0, 0.1); /* Faded volt green */
+    line-height: 1;
+    z-index: 0;
+}
+
+.pro-quote-banner h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1.5rem;
+}
+
+.pro-quote-banner p {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Brand Grid --- */
+.pro-brand-categories {
+    padding: 4rem 0 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+}
+
+.pro-section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+.btn-view-all {
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--text-secondary);
+    padding-bottom: 2px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (hover: hover) {
+    .btn-view-all:hover {
+        color: var(--volt-green);
+        border-color: var(--volt-green);
+    }
+}
+
+.pro-brand-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
 }
 
-.brand-card {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    aspect-ratio: 16/9;
+.pro-brand-card {
     display: block;
-    background-color: var(--surface-gray);
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--surface-dark);
 }
 
-.brand-card img {
+.brand-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+}
+
+.brand-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s var(--ease-out-expo);
+    transition: transform 0.8s var(--ease-power);
 }
 
 .brand-fallback {
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #1c1c1e, #333336);
+    background: linear-gradient(45deg, #111, #222);
 }
 
-.brand-card-overlay {
+.brand-overlay-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
-    display: flex;
-    align-items: flex-end;
-    padding: 2rem;
-    transition: padding 0.5s var(--ease-out-expo);
+    background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0.2) 60%, transparent 100%);
 }
 
-.brand-card h3 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--accent-white);
-    letter-spacing: -0.5px;
+.brand-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.brand-info h3 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.shop-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--volt-green);
+    opacity: 0.8;
+    transform: translateX(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 @media (hover: hover) {
-    .brand-card:hover img {
-        transform: scale(1.08);
+    .pro-brand-card:hover .brand-image-wrapper img {
+        transform: scale(1.05);
     }
-    .brand-card:hover .brand-card-overlay {
-        padding-bottom: 2.5rem; /* Text slightly floats up on hover */
+    .pro-brand-card:hover .shop-link {
+        opacity: 1;
+        transform: translateX(5px);
     }
 }
 
+/* --- Mobile Specific Tweaks --- */
 @media (max-width: 768px) {
     .carousel-overlay {
-        text-align: center;
-        width: 100%;
-        left: 0;
-        bottom: 15%;
+        bottom: 10%;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .pro-quote-banner {
+        padding: 4rem 5%;
     }
 }

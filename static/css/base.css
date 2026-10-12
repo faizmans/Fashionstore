@@ -1,13 +1,19 @@
-/* --- Apple Pro Style Variables --- */
+/* --- Pro Theme Variables --- */
 :root {
-    --bg-black: #000000;
-    --surface-gray: #1c1c1e;
-    --text-primary: #f5f5f7;
-    --text-secondary: #86868b;
-    --border-color: #333336;
-    --accent-white: #ffffff;
+    --bg-black: #050505;
+    --surface-dark: #111111;
+    --surface-lighter: #1a1a1a;
+    --text-primary: #F9F9F9;
+    --text-secondary: #888888;
+    --volt-green: #CEFF00;
+    --border-subtle: rgba(255,255,255,0.1);
     
-    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1); 
+    --font-sans: 'Inter', -apple-system, sans-serif;
+    --font-display: 'Anton', sans-serif;
+    
+    --ease-power: cubic-bezier(0.19, 1, 0.22, 1); 
+    --nav-height: 70px;
+    --promo-height: 36px;
 }
 
 * {
@@ -16,69 +22,409 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+body.pro-theme {
+    font-family: var(--font-sans);
     background-color: var(--bg-black);
     color: var(--text-primary);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    
-    /* Page load animation */
+    overflow-x: hidden;
     opacity: 0;
-    transition: opacity 0.8s ease-in-out;
+    transition: opacity 0.6s ease-in;
 }
 
-body.visible {
+body.pro-theme.visible {
     opacity: 1;
 }
 
 a {
     text-decoration: none;
     color: inherit;
-    -webkit-tap-highlight-color: transparent; /* Removes blue tap box on mobile */
+    transition: color 0.2s ease;
 }
 
-/* --- Glassmorphism Navbar --- */
-.navbar {
+/* --- Dynamic Background --- */
+.pro-bg-graphics {
     position: fixed;
     top: 0;
-    width: 100%;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
 }
 
-.nav-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 1.2rem 5%;
+/* --- Promo Bar --- */
+.promo-bar {
+    background-color: var(--volt-green);
+    color: var(--bg-black);
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1001;
+    height: var(--promo-height);
     display: flex;
+    align-items: center;
     justify-content: center;
-    transition: padding 0.3s ease;
 }
 
-.logo {
-    font-size: clamp(1.2rem, 3vw, 1.4rem); /* Fluid logo size */
+/* --- Pro Navigation --- */
+.pro-nav {
+    position: sticky; /* Changes from fixed to sticky so it sits below promo bar naturally */
+    top: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: transform 0.4s var(--ease-power);
+}
+
+.pro-nav.nav-hidden {
+    transform: translateY(-100%);
+}
+
+.nav-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 5%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.pro-logo {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.volt-dot {
+    color: var(--volt-green);
+}
+
+/* Desktop Links */
+.desktop-links {
+    display: flex;
+    gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.nav-link {
+    font-size: 0.85rem;
     font-weight: 700;
-    letter-spacing: -1px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--volt-green);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-power);
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Buttons & SVGs */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.nav-icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+@media (hover: hover) {
+    .nav-icon-btn:hover {
+        color: var(--volt-green);
+    }
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: var(--volt-green);
+    color: var(--bg-black);
+    font-size: 0.7rem;
+    font-weight: 900;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Main Container --- */
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem 5% 6rem; /* Adjusted because nav is now sticky, not fixed */
+    min-height: calc(100vh - var(--nav-height) - var(--promo-height));
+}
+
+/* --- Mobile Menu Drawer --- */
+.mobile-only { display: none; }
+.desktop-only { display: flex; }
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Slides from left like standard pro apps */
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: var(--surface-dark);
+    z-index: 2000;
+    padding: 2rem;
+    transition: left 0.5s var(--ease-power);
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-menu.active {
+    left: 0;
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.mobile-links a {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: color 0.2s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Animate links in when active */
+.mobile-menu.active .mobile-links a {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.mobile-links a:hover, .mobile-links a:active {
+    color: var(--volt-green);
+    padding-left: 0.5rem;
+}
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
+    z-index: 1500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* --- Pro Footer --- */
+.pro-footer {
+    background-color: var(--surface-dark);
+    padding: 5rem 5% 2rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.footer-grid {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: grid;
+    /* Auto-fit makes it automatically responsive on Tablet and Mobile */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 4rem 2rem;
+    margin-bottom: 4rem;
+}
+
+.footer-col p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+.footer-col h4 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
     color: var(--text-primary);
 }
 
-/* --- Global Container --- */
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 6rem 5% 4rem; /* Top padding clears fixed navbar */
+.footer-col a {
+    display: block;
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Mobile & Tablet Overrides */
-@media (max-width: 768px) {
-    .nav-content {
-        padding: 1rem 5%;
+@media (hover: hover) {
+    .footer-col a:hover {
+        color: var(--volt-green);
+        transform: translateX(5px);
     }
-    .container {
-        padding: 5rem 5% 3rem;
+}
+
+/* Newsletter Form */
+.newsletter-col {
+    grid-column: span 2; /* Takes up more space */
+}
+
+.newsletter-form {
+    display: flex;
+    margin-top: 1.5rem;
+    border-bottom: 2px solid var(--text-secondary);
+    transition: border-color 0.3s ease;
+}
+
+.newsletter-form:focus-within {
+    border-color: var(--volt-green);
+}
+
+.newsletter-form input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    padding: 0.8rem 0;
+    font-size: 1rem;
+    outline: none;
+    font-family: var(--font-sans);
+}
+
+.newsletter-form button {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    padding: 0 1rem;
+    transition: color 0.2s ease;
+}
+
+.newsletter-form button:hover {
+    color: var(--volt-green);
+}
+
+.footer-bottom {
+    max-width: 1600px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.footer-legal {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-legal a:hover {
+    color: var(--text-primary);
+}
+
+/* --- Responsive Layout Adjustments --- */
+
+/* Tablet & Smaller Laptops */
+@media (max-width: 1024px) {
+    .desktop-links { display: none; }
+    .desktop-only { display: none; }
+    .mobile-only { display: flex; }
+    
+    .nav-container {
+        /* Mobile Order: Hamburger -> Logo -> Cart */
+        justify-content: space-between;
+    }
+    
+    .pro-logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .newsletter-col {
+        grid-column: span 1;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 600px) {
+    .footer-grid {
+        gap: 3rem;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    .promo-bar {
+        font-size: 0.65rem;
+        letter-spacing: 1px;
     }
 }

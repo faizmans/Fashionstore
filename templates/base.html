@@ -3,34 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuzu | Pro Fashion</title>
+    <title>KUZU | PRO</title>
     {% load static %}
-    <!-- Premium Font: Inter -->
+    <!-- Premium Fonts: Inter for readability, Anton for bold Nike-style headers -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <!-- Cache-busting v=3 ensures you see the new changes instantly -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=3">
     {% block extra_css %}{% endblock %}
 </head>
-<body class="fade-in">
-    <!-- Glassmorphism Navbar -->
-    <nav class="navbar">
-        <div class="nav-content">
-            <a href="{% url 'index' %}" class="logo">KUZU.</a>
+<body class="pro-theme fade-in">
+    
+    <!-- Subtle Dynamic Tech Background -->
+    <div class="pro-bg-graphics">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+    </div>
+
+    <!-- Promo Bar -->
+    <div class="promo-bar">
+        <span>FREE EXPRESS SHIPPING ON ORDERS OVER $150</span>
+    </div>
+
+    <!-- Pro Navigation -->
+    <nav class="pro-nav" id="mainNav">
+        <div class="nav-container">
+            <!-- Left: Mobile Menu Trigger -->
+            <button class="nav-icon-btn mobile-only" id="menuToggle" aria-label="Open Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round"/>
+                </svg>
+            </button>
+
+            <!-- Center/Left: Logo -->
+            <a href="{% url 'home' %}" class="pro-logo">
+                KUZU<span class="volt-dot">.</span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="desktop-links">
+                <a href="{% url 'home' %}" class="nav-link">Home</a>
+                <a href="{% url 'index' %}" class="nav-link">Shop All</a>
+                <a href="#" class="nav-link">Men</a>
+                <a href="#" class="nav-link">Women</a>
+            </div>
+
+            <!-- Right: Cart & Actions -->
+            <div class="nav-actions">
+                <!-- Search Icon -->
+                <button class="nav-icon-btn desktop-only" aria-label="Search">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <!-- Cart Icon -->
+                <button class="nav-icon-btn" aria-label="Cart">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <path d="M3 6h18M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <span class="cart-badge">0</span>
+                </button>
+            </div>
         </div>
     </nav>
-    
+
+    <!-- Mobile Slide-out Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <span class="pro-logo">KUZU<span class="volt-dot">.</span></span>
+            <button class="nav-icon-btn" id="closeMenu">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="mobile-links">
+            <a href="{% url 'home' %}" style="animation-delay: 0.1s;">Home</a>
+            <a href="{% url 'index' %}" style="animation-delay: 0.2s;">Shop All</a>
+            <a href="#" style="animation-delay: 0.3s;">Men</a>
+            <a href="#" style="animation-delay: 0.4s;">Women</a>
+        </div>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Main Content -->
     <main class="container">
         {% block content %}
         {% endblock %}
     </main>
 
+    <!-- Pro Footer -->
+    <footer class="pro-footer">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <a href="{% url 'home' %}" class="pro-logo">KUZU<span class="volt-dot">.</span></a>
+                <p>Engineered for peak performance and uncompromising style. Push your limits.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="{% url 'index' %}">All Gear</a>
+                <a href="#">New Arrivals</a>
+                <a href="#">Best Sellers</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Order Status</a>
+                <a href="#">Shipping & Returns</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div class="footer-col newsletter-col">
+                <h4>Stay In The Loop</h4>
+                <p>Sign up for exclusive drops and Volt member benefits.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">JOIN</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kuzu Pro Fashion. All Rights Reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Smooth page reveal on load
+        // Page load reveal
         document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.add('visible');
         });
+
+        // Hide/Show Navbar on Scroll
+        let lastScroll = 0;
+        const nav = document.getElementById('mainNav');
+        const promoBar = document.querySelector('.promo-bar');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            // Adjust nav behavior based on promo bar height
+            if (currentScroll <= 30) {
+                nav.classList.remove('nav-hidden');
+                return;
+            }
+            if (currentScroll > lastScroll && !nav.classList.contains('nav-hidden')) {
+                nav.classList.add('nav-hidden'); // Scroll Down
+            } else if (currentScroll < lastScroll && nav.classList.contains('nav-hidden')) {
+                nav.classList.remove('nav-hidden'); // Scroll Up
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Mobile Menu Logic
+        const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
     </script>
 </body>
 </html>
