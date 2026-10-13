@@ -11,10 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <!-- Cache-busting v=10 -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=16">
+<link rel="stylesheet" href="{% static 'css/base.css' %}?v=19">
     {% block extra_css %}{% endblock %}
 </head>
 <body class="pro-theme fade-in">
+  <!-- Ultra-Premium Cinematic Preloader -->
+    <div id="pro-preloader" class="pro-preloader">
+        <!-- Aesthetic Ambient Graphic -->
+        <div class="preloader-bg-glow"></div>
+        
+        <div class="preloader-content">
+            <div class="preloader-brand">
+                <span class="pro-logo">KUZU<span class="volt-dot">.</span></span>
+            </div>
+            
+            <!-- Geometric Expanding Line -->
+            <div class="preloader-line-container">
+                <div class="preloader-line"></div>
+            </div>
+            
+            <div class="preloader-status">Premium Clothing</div>
+        </div>
+    </div>
     
     <!-- Subtle Dynamic Tech Background -->
     <div class="pro-bg-graphics">
@@ -135,13 +153,36 @@
         </div>
     </footer>
 
-    <script>
-        // Smooth Reveal
+<script>
+        // --- Premium Cinematic Preloader Logic ---
         document.addEventListener("DOMContentLoaded", () => {
-            document.body.classList.add('visible');
+            const preloader = document.getElementById('pro-preloader');
+            
+            // Check if first visit
+            if (!sessionStorage.getItem('kuzu_preloader_seen')) {
+                document.body.style.overflow = 'hidden';
+                
+                // Wait 2.4 seconds for the cinematic sequence, then pull the curtain up
+                setTimeout(() => {
+                    preloader.classList.add('curtain-up');
+                    document.body.classList.add('visible');
+                    document.body.style.overflow = ''; 
+                    
+                    sessionStorage.setItem('kuzu_preloader_seen', 'true');
+                    
+                    // Remove from DOM after the 1-second slide animation finishes
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 1000);
+                }, 2400); 
+            } else {
+                // Instant load for returning visitors
+                preloader.style.display = 'none';
+                document.body.classList.add('visible');
+            }
         });
 
-        // Smart Navbar Hide/Show on Scroll
+        // --- Smart Navbar Hide/Show on Scroll ---
         let lastScroll = 0;
         const nav = document.getElementById('mainNav');
         
@@ -152,14 +193,14 @@
                 return;
             }
             if (currentScroll > lastScroll && !nav.classList.contains('nav-hidden')) {
-                nav.classList.add('nav-hidden'); // Scroll down
+                nav.classList.add('nav-hidden');
             } else if (currentScroll < lastScroll && nav.classList.contains('nav-hidden')) {
-                nav.classList.remove('nav-hidden'); // Scroll up
+                nav.classList.remove('nav-hidden');
             }
             lastScroll = currentScroll;
         });
 
-        // Mobile Menu Drawer Logic
+        // --- Mobile Menu Drawer Logic ---
         const menuToggle = document.getElementById('menuToggle');
         const closeMenu = document.getElementById('closeMenu');
         const mobileMenu = document.getElementById('mobileMenu');
@@ -178,9 +219,12 @@
             }
         }
 
-        menuToggle.addEventListener('click', toggleMenu);
-        closeMenu.addEventListener('click', toggleMenu);
-        menuOverlay.addEventListener('click', toggleMenu);
+        if(menuToggle) menuToggle.addEventListener('click', toggleMenu);
+        if(closeMenu) closeMenu.addEventListener('click', toggleMenu);
+        if(menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
     </script>
 </body>
 </html>
+
+
+
