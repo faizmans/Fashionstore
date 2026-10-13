@@ -1,124 +1,116 @@
-/* --- Main Layout --- */
-.pro-detail-container {
+/* --- Apple Pro Main Layout --- */
+.apple-detail-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5rem;
+    gap: 6rem;
     align-items: start;
     padding-top: 2rem;
     margin-bottom: 6rem;
 }
 
-/* --- Left Column: Media --- */
-.pro-detail-media {
+/* --- Left Column: Media (Proportional Glass Container) --- */
+.apple-detail-media {
     position: relative;
     height: 100%;
 }
 
-.media-sticky-wrapper {
+.media-glass-wrapper {
     position: sticky;
     top: calc(var(--nav-height) + var(--promo-height) + 2rem);
     width: 100%;
-    /* Dynamically sizes based on screen height, maintaining a minimum */
-    height: calc(100vh - 180px);
-    min-height: 500px;
-    background-color: var(--surface-dark);
-    border-radius: 8px;
+    height: auto;
+    aspect-ratio: 4/5; /* Perfect uniform rectangle on all screens */
+    max-height: calc(100vh - 120px); /* Prevents container from overflowing screen height on massive monitors */
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
     overflow: hidden;
-    animation: fadeInScale 0.8s var(--ease-power) forwards;
+    animation: fadeInScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Blurred Background Layer */
-.media-bg-blur {
+/* Ambient Background Glow */
+.media-ambient-glow {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(40px) brightness(0.2);
-    transform: scale(1.1);
+    filter: blur(60px) opacity(0.3);
+    transform: scale(1.2);
     z-index: 0;
 }
 
-/* Uncropped Main Image */
+/* Fixed Main Image */
 .main-product-image {
-    position: absolute;
-    inset: 0;
+    position: relative;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 3rem; /* Breathing room inside the container */
+    padding: 3rem; 
     z-index: 1;
 }
 
-.media-overlay-accents {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 80%, rgba(5,5,5,0.7) 100%);
-    pointer-events: none;
-    z-index: 2;
-}
-
 @keyframes fadeInScale {
-    from { opacity: 0; transform: scale(0.98); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: scale(0.96) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* --- Right Column: Info --- */
-.pro-detail-info {
+.apple-detail-info {
     padding-bottom: 2rem;
+    padding-top: 2rem;
 }
 
 .pro-brand-tag {
-    font-size: 1rem;
-    font-weight: 900;
-    color: var(--volt-green);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 0.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 0.8rem;
 }
 
-.pro-detail-title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 1.05;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
+.apple-detail-title {
+    font-family: var(--font-sans);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 1.5rem;
     color: var(--text-primary);
 }
 
-.pro-price-placeholder {
-    font-family: var(--font-display);
-    font-size: 1.8rem;
-    color: var(--text-primary);
-    margin-bottom: 2rem;
-    letter-spacing: 1px;
-}
-
-.pro-detail-description {
-    font-size: 1.1rem;
+.apple-detail-description {
+    font-size: 1.15rem;
     line-height: 1.6;
     color: var(--text-secondary);
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
     max-width: 95%;
+    font-weight: 300;
 }
 
-/* --- Size Selector --- */
-.pro-size-selector {
-    margin-bottom: 3rem;
+/* --- Interactive Size Selector --- */
+.apple-size-selector {
+    margin-bottom: 3.5rem;
 }
 
 .selector-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 .selector-label {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     color: var(--text-primary);
 }
 
@@ -126,110 +118,99 @@
     font-size: 0.85rem;
     color: var(--text-secondary);
     text-decoration: underline;
-    transition: color 0.2s ease;
+    transition: color 0.3s ease;
 }
 
-.size-guide-link:hover { color: var(--volt-green); }
+.size-guide-link:hover { color: var(--text-primary); }
 
-.pro-size-grid {
+.apple-size-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 1rem;
 }
 
-.pro-size-box {
-    background-color: var(--surface-dark);
-    border: 1px solid var(--border-subtle);
-    border-radius: 4px;
-    padding: 1rem;
+.apple-size-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
     text-align: center;
     cursor: pointer;
     color: var(--text-primary);
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.pro-size-box .size-name {
+.apple-size-box .size-name {
     display: block;
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
-.pro-size-box .size-abbr {
+.apple-size-box .size-abbr {
     display: block;
     font-size: 0.75rem;
     color: var(--text-secondary);
-    margin-top: 0.2rem;
+    margin-top: 0.3rem;
 }
 
 @media (hover: hover) {
-    .pro-size-box:hover {
-        border-color: var(--volt-green);
+    .apple-size-box:hover {
+        background: rgba(255, 255, 255, 0.08);
         transform: translateY(-2px);
     }
 }
 
-.pro-size-box.active {
-    border-color: var(--volt-green);
-    background-color: rgba(206, 255, 0, 0.1);
+.apple-size-box.active {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    transform: scale(1.02);
 }
 
-.pro-size-box.active .size-name, 
-.pro-size-box.active .size-abbr {
-    color: var(--volt-green);
-}
-
-/* --- Action Buttons --- */
-.pro-actions {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 3rem;
-}
-
-.btn-pro-buy {
-    flex-grow: 1;
-    background-color: var(--text-primary);
+.apple-size-box.active .size-name, 
+.apple-size-box.active .size-abbr {
     color: var(--bg-black);
-    border: none;
-    border-radius: 4px;
-    padding: 1.5rem;
+}
+
+/* --- Signature Neon WhatsApp Button --- */
+.apple-actions {
+    margin-bottom: 3.5rem;
+}
+
+.btn-apple-inquire {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    letter-spacing: 2px;
+    width: 100%;
+    background-color: var(--volt-green); /* Kuzu Neon Color */
+    color: var(--bg-black); /* High contrast dark text */
+    border: none;
+    border-radius: 980px;
+    padding: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: all 0.3s var(--ease-power);
-}
-
-.btn-pro-favorite {
-    background-color: var(--surface-dark);
-    color: var(--text-primary);
-    border: 1px solid var(--border-subtle);
-    border-radius: 4px;
-    width: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.3s var(--ease-power);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 24px rgba(206, 255, 0, 0.15); /* Soft neon shadow */
 }
 
 @media (hover: hover) {
-    .btn-pro-buy:hover {
-        background-color: var(--volt-green);
-    }
-    .btn-pro-favorite:hover {
-        border-color: var(--volt-green);
-        color: var(--volt-green);
+    .btn-apple-inquire:hover {
+        transform: scale(1.02) translateY(-2px);
+        box-shadow: 0 12px 32px rgba(206, 255, 0, 0.3);
+        background-color: #d8ff33; /* Slightly brighter neon on hover */
     }
 }
 
+.btn-apple-inquire:active {
+    transform: scale(0.98);
+}
+
 /* --- Premium Perks --- */
-.pro-perks {
-    border-top: 1px solid var(--border-subtle);
-    padding-top: 2rem;
+.apple-perks {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2.5rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -240,77 +221,70 @@
     align-items: center;
     gap: 1.2rem;
     font-size: 0.95rem;
-    font-weight: 500;
     color: var(--text-secondary);
 }
 
 .perk-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--surface-dark);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-subtle);
 }
 
 /* --- Slide Up Animations --- */
-.slide-up { animation: slideUpFade 0.6s var(--ease-power) forwards; opacity: 0; transform: translateY(20px); }
-.slide-up-delay-1 { animation: slideUpFade 0.6s var(--ease-power) 0.1s forwards; opacity: 0; transform: translateY(20px); }
-.slide-up-delay-2 { animation: slideUpFade 0.6s var(--ease-power) 0.2s forwards; opacity: 0; transform: translateY(20px); }
-.slide-up-delay-3 { animation: slideUpFade 0.6s var(--ease-power) 0.3s forwards; opacity: 0; transform: translateY(20px); }
-.slide-up-delay-4 { animation: slideUpFade 0.6s var(--ease-power) 0.4s forwards; opacity: 0; transform: translateY(20px); }
+.slide-up { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(30px); }
+.slide-up-delay-1 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; transform: translateY(30px); }
+.slide-up-delay-2 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; transform: translateY(30px); }
+.slide-up-delay-3 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; transform: translateY(30px); }
+.slide-up-delay-4 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards; opacity: 0; transform: translateY(30px); }
 
 @keyframes slideUpFade {
     to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- Related Products --- */
-.pro-related-section {
-    border-top: 1px solid var(--border-subtle);
-    padding: 5rem 0;
+.apple-related-section {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 6rem 0;
 }
 
-.pro-section-heading {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3rem);
-    letter-spacing: 1px;
+.apple-section-heading {
+    font-family: var(--font-sans);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.5px;
     margin-bottom: 3rem;
+    text-align: center;
 }
 
-.volt-text { color: var(--volt-green); }
-
-.pro-related-grid {
+.apple-related-grid {
     display: grid;
-    /* Adapts seamlessly across screen sizes */
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 2.5rem;
 }
 
-.pro-rel-card {
+.apple-rel-card {
     display: flex;
     flex-direction: column;
 }
 
-.rel-image-wrapper {
+.rel-glass-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 4/5;
-    background-color: var(--surface-dark);
-    margin-bottom: 1rem;
+    aspect-ratio: 1/1; 
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
     overflow: hidden;
-    border-radius: 4px;
 }
 
-.rel-bg-blur {
+.rel-ambient-glow {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(20px) brightness(0.3);
-    z-index: 0;
+    filter: blur(40px) opacity(0.2);
 }
 
 .rel-main-img {
@@ -319,87 +293,93 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 1rem;
-    transition: transform 0.6s var(--ease-power);
+    padding: 1.5rem;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1;
 }
 
+.rel-info {
+    text-align: center;
+}
+
 .rel-info .rel-brand {
-    font-size: 0.75rem;
-    font-weight: 900;
-    color: var(--volt-green);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 0.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.4rem;
 }
 
 .rel-info .rel-name {
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 500;
     color: var(--text-primary);
-    text-transform: uppercase;
 }
 
 @media (hover: hover) {
-    .pro-rel-card:hover .rel-main-img {
+    .apple-rel-card:hover .rel-main-img {
         transform: scale(1.08);
     }
 }
 
 /* --- RESPONSIVE ADJUSTMENTS --- */
 
-/* Laptops & Tablets (Max 1024px) */
+/* Tablets / Laptops (Max 1024px) */
 @media (max-width: 1024px) {
-    .pro-detail-container {
-        grid-template-columns: 1fr; /* Switch to stacked layout */
+    .apple-detail-container {
+        grid-template-columns: 1fr;
         gap: 3rem;
         padding-top: 0;
     }
 
-    .media-sticky-wrapper {
-        position: relative; /* Disable sticky on tablet/mobile */
+    .media-glass-wrapper {
+        position: relative;
         top: 0;
         height: auto;
-        aspect-ratio: 1/1; /* Square image ratio for mobile */
+        aspect-ratio: 4/5;
+        max-height: none; /* Let tablet set its own natural height */
         border-radius: 0;
-        margin: 0 -4%; /* Bleed image to edges of the container */
-        width: 108%;
+        border: none;
+        margin: 0 -5%;
+        width: 110%;
+        background: transparent;
     }
     
     .main-product-image {
         padding: 2rem;
     }
 
-    .pro-detail-description {
+    .apple-detail-description {
         max-width: 100%;
     }
 }
 
 /* Mobile Phones (Max 600px) */
 @media (max-width: 600px) {
-    .pro-actions {
-        flex-direction: column;
-    }
-    
-    .btn-pro-buy {
-        width: 100%;
+    .media-glass-wrapper {
+        aspect-ratio: 1/1; /* Switch to perfectly square on phones */
     }
 
-    .btn-pro-favorite {
-        width: 100%;
-        height: 60px;
-    }
-    
-    .pro-size-grid {
+    .apple-size-grid {
         grid-template-columns: repeat(3, 1fr);
     }
     
-    .pro-related-grid {
-        grid-template-columns: 1fr 1fr; /* Force 2 columns on small phones */
-        gap: 1rem;
+    .apple-related-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem 1rem;
+    }
+    
+    .rel-glass-wrapper {
+        border-radius: 12px;
     }
     
     .rel-main-img {
-        padding: 0.5rem;
+        padding: 0.8rem;
+    }
+
+    .btn-apple-inquire {
+        font-size: 1rem;
+        padding: 1.2rem;
     }
 }

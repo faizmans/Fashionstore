@@ -2,49 +2,47 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}?v=11">
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}?v=14">
 {% endblock %}
 
 {% block content %}
-    <div class="pro-detail-container">
+    <div class="apple-detail-container">
         
-        <!-- Left: Cinematic Sticky Image with Blur Background -->
-        <div class="pro-detail-media">
-            <div class="media-sticky-wrapper">
+        <!-- Left: Cinematic Sticky Image with Ambient Glow (Fixed, No Float) -->
+        <div class="apple-detail-media">
+            <div class="media-glass-wrapper">
                 {% if product.image %}
-                    <!-- Blurred background layer (prevents harsh borders/black bars) -->
-                    <img src="{{ product.image.url }}" alt="" class="media-bg-blur" aria-hidden="true" loading="lazy">
-                    <!-- Main uncropped image -->
+                    <!-- Ambient background blur (Apple style glow) -->
+                    <img src="{{ product.image.url }}" alt="" class="media-ambient-glow" aria-hidden="true" loading="lazy">
+                    <!-- Main uncropped fixed image -->
                     <img src="{{ product.image.url }}" alt="{{ product.name }}" class="main-product-image">
                 {% else %}
                     <div class="pro-image-fallback"></div>
                 {% endif %}
-                <div class="media-overlay-accents"></div>
             </div>
         </div>
 
         <!-- Right: Scrollable Info & Actions -->
-        <div class="pro-detail-info">
+        <div class="apple-detail-info">
             <div class="info-header slide-up">
                 <p class="pro-brand-tag">{{ product.brand.name }}</p>
-                <h1 class="pro-detail-title">{{ product.name }}</h1>
-                <p class="pro-price-placeholder">$120.00</p>
+                <h1 class="apple-detail-title">{{ product.name }}</h1>
             </div>
             
-            <p class="pro-detail-description slide-up-delay-1">
-                Crafted from premium materials to deliver a tailored fit and unparalleled comfort. Designed for the modern wardrobe and engineered to push your limits.
+            <p class="apple-detail-description slide-up-delay-1">
+                Crafted from premium materials to deliver a tailored fit and unparalleled comfort. Designed for the modern wardrobe and engineered to elevate your everyday aesthetic.
             </p>
 
             <!-- Interactive Size Selector -->
-            <div class="pro-size-selector slide-up-delay-2">
+            <div class="apple-size-selector slide-up-delay-2">
                 <div class="selector-header">
-                    <p class="selector-label">SELECT SIZE</p>
+                    <p class="selector-label">Select Size</p>
                     <a href="#" class="size-guide-link">Size Guide</a>
                 </div>
                 
-                <div class="pro-size-grid" id="sizeGrid">
+                <div class="apple-size-grid" id="sizeGrid">
                     {% for size in product.sizes.all %}
-                        <button class="pro-size-box" type="button">
+                        <button class="apple-size-box" type="button" data-size="{{ size.name }}">
                             <span class="size-name">{{ size.name }}</span>
                             <span class="size-abbr">{{ size.abbreviation }}</span>
                         </button>
@@ -54,38 +52,36 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="pro-actions slide-up-delay-3">
-                <button class="btn-pro-buy">
-                    <span>ADD TO BAG</span>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Custom Neon WhatsApp Inquiry Button -->
+            <div class="apple-actions slide-up-delay-3">
+                <a href="https://wa.me/9773423956?text=Hi!%20I'm%20interested%20in%20the%20{{ product.name|urlencode }}%20({{ product.brand.name|urlencode }})." 
+                   id="whatsappBtn" 
+                   class="btn-apple-inquire" 
+                   target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.663-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                     </svg>
-                </button>
-                <button class="btn-pro-favorite" aria-label="Favorite">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+                    <span>INQUIRE ON WHATSAPP</span>
+                </a>
             </div>
 
             <!-- Premium Perks Section -->
-            <div class="pro-perks slide-up-delay-4">
+            <div class="apple-perks slide-up-delay-4">
                 <div class="perk-item">
                     <div class="perk-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <span>Free Standard Shipping & Returns</span>
+                    <span>Global Express Delivery Available</span>
                 </div>
                 <div class="perk-item">
                     <div class="perk-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <span>Authenticity Guaranteed. Added: {{ product.created_at|date:"F Y" }}</span>
+                    <span>Authenticity Guaranteed</span>
                 </div>
             </div>
         </div>
@@ -93,14 +89,13 @@
 
     <!-- Related Products -->
     {% if related_products %}
-    <div class="pro-related-section">
-        <h2 class="pro-section-heading">COMPLETE THE <span class="volt-text">LOOK.</span></h2>
-        <div class="pro-related-grid">
+    <div class="apple-related-section">
+        <h2 class="apple-section-heading">Curated For You</h2>
+        <div class="apple-related-grid">
             {% for rel_prod in related_products %}
-                <a href="{% url 'product_detail' rel_prod.id %}" class="pro-rel-card">
-                    <div class="rel-image-wrapper">
-                        <!-- Dual image trick for related products too -->
-                        <img src="{{ rel_prod.image.url }}" alt="" class="rel-bg-blur" aria-hidden="true" loading="lazy">
+                <a href="{% url 'product_detail' rel_prod.id %}" class="apple-rel-card">
+                    <div class="rel-glass-wrapper">
+                        <img src="{{ rel_prod.image.url }}" alt="" class="rel-ambient-glow" aria-hidden="true" loading="lazy">
                         <img src="{{ rel_prod.image.url }}" alt="{{ rel_prod.name }}" class="rel-main-img" loading="lazy">
                     </div>
                     <div class="rel-info">
@@ -113,15 +108,20 @@
     </div>
     {% endif %}
 
-    <!-- Size Selection Script -->
+    <!-- Size & WhatsApp Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const sizeBoxes = document.querySelectorAll('.pro-size-box');
-            
+            const sizeBoxes = document.querySelectorAll('.apple-size-box');
+            const whatsappBtn = document.getElementById('whatsappBtn');
+            const baseUrl = whatsappBtn.href;
+
             sizeBoxes.forEach(box => {
                 box.addEventListener('click', () => {
                     sizeBoxes.forEach(b => b.classList.remove('active'));
                     box.classList.add('active');
+                    
+                    const selectedSize = box.getAttribute('data-size');
+                    whatsappBtn.href = `${baseUrl}%20I%20would%20like%20size:%20${encodeURIComponent(selectedSize)}.`;
                 });
             });
         });

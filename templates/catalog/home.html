@@ -35,24 +35,24 @@
             </div>
         </div>
     </section>
-<!-- Premium Apparel Details -->
+<!-- Premium Menswear Details -->
     <section class="pro-features">
         <div class="feature-item">
             <div class="feature-icon-wrapper">
-                <!-- Feather Icon (Represents lightweight/soft fabric) -->
+                <!-- Needle & Thread / Fabric Icon -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
                     <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" stroke-linecap="round" stroke-linejoin="round"/>
                     <line x1="16" y1="8" x2="2" y2="22" stroke-linecap="round" stroke-linejoin="round"/>
                     <line x1="17.5" y1="15" x2="9" y2="15" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
-            <h3>SIGNATURE FABRICS</h3>
-            <p>Crafted from ultra-soft, breathable materials that drape flawlessly and feel incredible against the skin.</p>
+            <h3>HERITAGE FABRICS</h3>
+            <p>Sourced from the world's finest mills. Experience the breathable comfort of premium cottons and rich, textured blends.</p>
         </div>
         
         <div class="feature-item">
             <div class="feature-icon-wrapper">
-                <!-- Scissors Icon (Represents tailoring/craftsmanship) -->
+                <!-- Tailor Scissors Icon -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
                     <circle cx="6" cy="6" r="3" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="6" cy="18" r="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -61,46 +61,43 @@
                     <line x1="8.12" y1="8.12" x2="12" y2="12" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
-            <h3>EXPERT TAILORING</h3>
-            <p>Meticulous stitching and premium detailing designed for everyday elegance and enduring style.</p>
+            <h3>BESPOKE TAILORING</h3>
+            <p>Every stitch is purposeful. Our menswear is cut to provide a sharp, structured fit that moves effortlessly with you.</p>
         </div>
         
         <div class="feature-item">
             <div class="feature-icon-wrapper">
-                <!-- Abstract Diamond/Shape (Represents structure/fit) -->
+                <!-- Clean Minimalist Layout Icon -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-linecap="round" stroke-linejoin="round"/>
-                    <polyline points="7.5 4.21 12 6.81 16.5 4.21" stroke-linecap="round" stroke-linejoin="round"/>
-                    <polyline points="7.5 19.79 7.5 14.6 3 12" stroke-linecap="round" stroke-linejoin="round"/>
-                    <polyline points="21 12 16.5 14.6 16.5 19.79" stroke-linecap="round" stroke-linejoin="round"/>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="12" y1="22.08" x2="12" y2="12" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="3" y1="9" x2="21" y2="9" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="9" y1="21" x2="9" y2="9" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
-            <h3>MODERN SILHOUETTE</h3>
-            <p>Cut to flatter. Our structured yet comfortable designs elevate your look for any occasion.</p>
+            <h3>TIMELESS DESIGN</h3>
+            <p>Elevated essentials for the modern gentleman. We create versatile pieces that form the foundation of a sophisticated wardrobe.</p>
         </div>
     </section>
 
-    <!-- Motivational Quote Banner -->
+    <!-- Exclusive Quote Banner -->
     <section class="pro-quote-banner">
         <div class="quote-content">
             <span class="quote-mark">"</span>
-            <h2>SUCCESS ISN'T GIVEN. <br>IT'S <span class="volt-text">EARNED.</span></h2>
-            <p>- KUZU PRO ATHLETES</p>
+            <h2>TRUE LUXURY <span class="volt-text">WHISPERS.</span> <br>IT DOES NOT SHOUT.</h2>
+            <p>&mdash; THE KUZU FASHION HUB.</p>
         </div>
     </section>
 
     <!-- Category / Brand Grid -->
     <section class="pro-brand-categories">
         <div class="section-header">
-            <h2 class="pro-section-title">CHOOSE YOUR <span class="volt-text">WEAPON.</span></h2>
+            <h2 class="pro-section-title">CHOOSE YOUR <span class="volt-text">BRAND.</span></h2>
             <a href="{% url 'index' %}" class="btn-view-all">VIEW ALL</a>
         </div>
         
         <div class="pro-brand-grid">
             {% for brand in brands %}
-                <a href="{% url 'index' %}" class="pro-brand-card">
+                <a href="{% url 'brand_products' brand.id %}" class="pro-brand-card">
                     <div class="brand-image-wrapper">
                         {% if brand.cover_image %}
                             <img src="{{ brand.cover_image }}" alt="{{ brand.name }}" loading="lazy">

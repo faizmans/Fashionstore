@@ -167,29 +167,73 @@
     }
 }
 
+/* --- Premium Menswear Features Section --- */
+.pro-features {
+    display: grid;
+    /* Fluid grid: seamlessly adapts to any screen size */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    padding: 6rem 5%;
+    background-color: var(--bg-black);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.feature-item {
+    text-align: left;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(206, 255, 0, 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+@media (hover: hover) {
+    .feature-item:hover {
+        transform: translateY(-5px);
+        border-color: rgba(206, 255, 0, 0.3);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .feature-item:hover::before {
+        opacity: 1;
+    }
+}
+
 .feature-icon-wrapper {
     position: relative;
     z-index: 1;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    background-color: var(--surface-dark);
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 2rem;
     border: 1px solid var(--border-subtle);
-    transition: all 0.4s ease;
 }
 
 .feature-item h3 {
     position: relative;
     z-index: 1;
-    font-family: var(--font-display);
-    font-size: 1.8rem;
-    letter-spacing: 1.5px;
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 2px;
     margin-bottom: 1rem;
     color: var(--text-primary);
+    text-transform: uppercase;
 }
 
 .feature-item p {
@@ -198,58 +242,76 @@
     color: var(--text-secondary);
     font-size: 1.05rem;
     line-height: 1.7;
-    font-weight: 400;
+    font-weight: 300;
 }
 
-/* --- Motivational Quote Banner --- */
+/* --- Exclusive Quote Banner --- */
 .pro-quote-banner {
     position: relative;
     width: 100vw;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--surface-lighter);
-    padding: 6rem 5%;
+    background-color: var(--surface-dark);
+    padding: 8rem 5%;
     text-align: center;
-    margin: 4rem 0;
-    border-top: 1px solid var(--border-subtle);
     border-bottom: 1px solid var(--border-subtle);
 }
 
 .quote-content {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 0 auto;
     position: relative;
 }
 
 .quote-mark {
     position: absolute;
-    top: -50px;
+    top: -60px;
     left: 50%;
     transform: translateX(-50%);
     font-family: var(--font-display);
-    font-size: 8rem;
-    color: rgba(206, 255, 0, 0.05); 
+    font-size: 10rem;
+    color: rgba(206, 255, 0, 0.04); 
     line-height: 1;
     z-index: 0;
+    user-select: none;
 }
 
 .pro-quote-banner h2 {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1.1;
-    letter-spacing: 2px;
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -1px;
     position: relative;
     z-index: 1;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
 }
 
 .pro-quote-banner p {
     font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 3px;
+    font-weight: 600;
+    letter-spacing: 4px;
     color: var(--text-secondary);
     position: relative;
     z-index: 1;
+    text-transform: uppercase;
+}
+
+/* --- Mobile Specific Tweaks --- */
+@media (max-width: 768px) {
+    .pro-features {
+        padding: 4rem 5%;
+        gap: 2rem;
+    }
+    
+    .feature-item {
+        padding: 2rem;
+    }
+
+    .pro-quote-banner {
+        padding: 5rem 5%;
+    }
 }
 
 /* --- Brand Grid --- */

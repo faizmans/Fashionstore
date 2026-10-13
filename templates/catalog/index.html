@@ -6,10 +6,22 @@
 {% endblock %}
 
 {% block content %}
-    <!-- High-Fashion Editorial Hero -->
+    <!-- Dynamic High-Fashion Editorial Hero -->
     <header class="pro-hero">
-        <h1 class="pro-hero-title">THE <span class="volt-text">CURATION.</span></h1>
-        <p class="pro-hero-subtitle">Impeccable tailoring meets modern design. Explore our latest seasonal arrivals.</p>
+        <h1 class="pro-hero-title">
+            {% if brand %}
+                {{ brand.name|upper }} <span class="volt-text">GEAR.</span>
+            {% else %}
+                THE <span class="volt-text">CURATION.</span>
+            {% endif %}
+        </h1>
+        <p class="pro-hero-subtitle">
+            {% if brand %}
+                Explore the exclusive collection from {{ brand.name }}. Engineered for peak performance.
+            {% else %}
+                Impeccable tailoring meets modern design. Explore our latest seasonal arrivals.
+            {% endif %}
+        </p>
     </header>
 
     <!-- Results Counter -->
