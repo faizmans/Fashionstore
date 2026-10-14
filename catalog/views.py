@@ -3,20 +3,18 @@ from .models import Product, Brand, PosterImage
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from .models import Product, Brand, PosterImage
+from django.core.paginator import Paginator 
 
 
 
 
 
 def home(request):
-    # Get up to 5 poster images for the carousel
     posters = PosterImage.objects.all()[:5]
     
-    # Get all brands and attach their first product's image to use as a cover photo
     brands = Brand.objects.all()
     brand_data = []
     for brand in brands:
-        # Get the newest product for this brand to use as the category image
         cover_product = brand.products.order_by('-created_at').first()
         brand_data.append({
             'id': brand.id,
@@ -30,39 +28,56 @@ def home(request):
     })
 
 
-
-
 def index(request):
     query = request.GET.get('q')
-    products = Product.objects.all().order_by('-created_at')
-
+    selected_brands = request.GET.getlist('brand') 
+    
+    # OPTIMIZATION: Fetch brand and sizes in the same query to stop database lagging
+    products = Product.objects.select_related('brand').prefetch_related('sizes').all().order_by('-created_at')
+    
     if query:
-        # Filter products by matching the product name OR the brand name
         products = products.filter(
             Q(name__icontains=query) | 
             Q(brand__name__icontains=query)
         )
+        
+    if selected_brands:
+        products = products.filter(brand__id__in=selected_brands)
+        
+    all_brands = Brand.objects.all().order_by('name')
     
-    # We pass brand=None because this is the global shop
+    # PAGINATION: Show 12 products per page
+    paginator = Paginator(products, 12) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     return render(request, 'catalog/index.html', {
-        'products': products,
+        'products': page_obj, # Pass the paginated object instead of all products
+        'all_brands': all_brands,
+        'selected_brands': selected_brands,
         'brand': None 
     })
 
 def brand_products(request, brand_id):
-    # Fetch the exact brand clicked
     brand = get_object_or_404(Brand, pk=brand_id)
     
-    # Filter products where the brand matches
-    products = Product.objects.filter(brand=brand).order_by('-created_at')
+    # OPTIMIZATION
+    products = Product.objects.select_related('brand').prefetch_related('sizes').filter(brand=brand).order_by('-created_at')
+    
+    all_brands = Brand.objects.all().order_by('name')
+    selected_brands = [str(brand.id)]
+    
+    # PAGINATION: Show 12 products per page
+    paginator = Paginator(products, 12) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
     return render(request, 'catalog/index.html', {
-        'products': products,
-        'brand': brand  # Pass the brand to the template to customize the header
+        'products': page_obj, # Pass the paginated object
+        'all_brands': all_brands,
+        'selected_brands': selected_brands, 
+        'brand': brand  
     })
-
-
-
 
 
 

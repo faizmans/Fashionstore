@@ -1,272 +1,434 @@
-/* --- Premium Hero Section --- */
-.pro-hero {
-    text-align: left;
-    padding: 3rem 0 4rem;
-    border-bottom: 1px solid var(--border-subtle);
+/* --- Apple Pro Hero Section --- */
+.apple-hero {
+    text-align: center;
+    padding: 4rem 0 3rem;
     margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.pro-hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(3.5rem, 8vw, 7rem);
-    text-transform: uppercase;
-    line-height: 0.9;
-    letter-spacing: 2px;
-    margin-bottom: 1rem;
+.apple-hero-title {
+    font-family: var(--font-sans);
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 1.2rem;
     color: var(--text-primary);
+    text-transform: uppercase;
 }
 
-.volt-text {
-    color: var(--volt-green);
+.gradient-text {
+    background: linear-gradient(135deg, var(--text-primary) 0%, #888 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.pro-hero-subtitle {
+.volt-text { color: var(--volt-green); }
+
+.apple-hero-subtitle {
     font-size: clamp(1rem, 2vw, 1.2rem);
     color: var(--text-secondary);
-    font-weight: 400;
-    max-width: 600px;
+    font-weight: 300;
+    max-width: 650px;
     line-height: 1.6;
+    margin: 0 auto;
 }
 
-/* --- Filter Bar --- */
-.pro-filter-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* --- Master Layout Grid --- */
+.apple-shop-container {
+    display: grid;
+    grid-template-columns: 260px 1fr; /* Slightly wider sidebar for Pro feel */
+    gap: 4rem;
+    align-items: start;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* --- Sidebar Filters --- */
+.apple-filter-sidebar {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--promo-height) + 2rem);
+    background: transparent;
+}
+
+.filter-group {
     margin-bottom: 3rem;
-    padding-bottom: 1rem;
 }
 
-.results-count {
-    font-size: 0.9rem;
-    font-weight: 500;
+.filter-title {
+    font-size: 0.85rem;
+    font-weight: 700;
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    margin-bottom: 1.5rem;
 }
 
-/* --- Fluid Product Grid --- */
-.pro-product-grid {
-    display: grid;
-    /* Automatically creates columns based on screen width */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 4rem 2rem;
-    width: 100%;
-    margin-bottom: 6rem;
-}
-
-/* --- Product Cards --- */
-.pro-product-card {
+/* Premium Filter Pills (Replaces Checkboxes) */
+.filter-options-pills {
     display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    text-decoration: none;
-    animation: slideUpFade 0.8s var(--ease-power) forwards;
-    opacity: 0;
-    transform: translateY(30px);
+    flex-wrap: wrap;
+    gap: 0.8rem;
 }
 
-@keyframes slideUpFade {
-    to {
-        opacity: 1;
-        transform: translateY(0);
+.apple-filter-pill {
+    display: block;
+    padding: 0.8rem 1.4rem;
+    border-radius: 980px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: center;
+}
+
+.apple-filter-pill input {
+    display: none; 
+}
+
+@media (hover: hover) {
+    .apple-filter-pill:hover {
+        background: rgba(255,255,255,0.08);
+        color: var(--text-primary);
+        border-color: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
     }
 }
 
-/* --- Image Container (Cinematic Blur Setup) --- */
-.pro-image-container {
-    width: 100%;
-    aspect-ratio: 4/5;
-    background-color: var(--surface-dark);
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-    border-radius: 4px;
+/* Active/Checked State for Pills */
+.apple-filter-pill.active {
+    background: var(--text-primary);
+    color: var(--bg-black);
+    border-color: var(--text-primary);
+    box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+    transform: translateY(-2px);
 }
 
-/* Blurred Background Layer */
-.pro-bg-blur {
+/* --- Filter Bar & Mobile Toggles --- */
+.apple-filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.results-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-mobile-filter {
+    background: var(--text-primary);
+    color: var(--bg-black);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 980px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+/* --- Fluid Product Grid --- */
+.apple-product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 3.5rem 2rem;
+    width: 100%;
+    margin-bottom: 8rem;
+}
+
+/* --- Apple Glass Product Cards --- */
+.apple-product-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.apple-image-glass {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateZ(0); /* Hardware Acceleration */
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-bg-blur {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(25px) brightness(0.25);
-    transform: scale(1.1);
-    z-index: 0;
+    filter: blur(40px) brightness(0.25);
+    transform: scale(1.2);
+    transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Main Uncropped Image */
-.pro-main-img {
+.apple-main-img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Prevents cropping */
-    padding: 1.5rem; /* Breathing room inside the card */
+    object-fit: contain;
+    padding: 2.5rem;
     z-index: 1;
-    transition: transform 0.8s var(--ease-power);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.pro-image-fallback {
+/* Floating Action Pill */
+.apple-quick-view {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, #111, #1a1a1a);
-    z-index: 0;
-}
-
-/* Quick View Overlay */
-.pro-quick-view {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(206, 255, 0, 0.95);
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px) scale(0.95);
+    background: rgba(255, 255, 255, 0.95);
     color: var(--bg-black);
-    padding: 1rem 1.5rem;
+    padding: 0.9rem 1.8rem;
+    border-radius: 980px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 0.5rem;
     font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 1.5px;
-    transform: translateY(100%);
-    transition: transform 0.4s var(--ease-power);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 10;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-/* Desktop Hover Effects */
 @media (hover: hover) {
-    .pro-product-card:hover .pro-main-img {
-        transform: scale(1.08);
+    .apple-product-card:hover .apple-image-glass {
+        border-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
     
-    .pro-product-card:hover .pro-quick-view {
-        transform: translateY(0);
+    .apple-product-card:hover .apple-main-img { 
+        transform: scale(1.08); 
+    }
+    
+    .apple-product-card:hover .apple-bg-blur { 
+        filter: blur(50px) brightness(0.4); 
+    }
+    
+    .apple-product-card:hover .apple-quick-view { 
+        transform: translateX(-50%) translateY(0) scale(1); 
+        opacity: 1; 
     }
 }
 
-/* --- Product Info --- */
-.pro-product-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+.apple-product-info { padding: 0 0.5rem; }
 
-.pro-brand-subtitle {
+.apple-brand-subtitle {
     font-size: 0.75rem;
-    font-weight: 900;
+    font-weight: 700;
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     margin-bottom: 0.5rem;
     transition: color 0.3s ease;
 }
 
-.pro-product-name {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    line-height: 1.1;
+.apple-product-name {
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.2;
     margin-bottom: 1rem;
     color: var(--text-primary);
+    letter-spacing: -0.5px;
 }
 
-.pro-sizes-container {
+.apple-sizes-container {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
 
-.pro-size-pill {
-    font-size: 0.75rem;
-    font-weight: 500;
+.apple-size-pill {
+    font-size: 0.7rem;
+    font-weight: 600;
     color: var(--text-secondary);
-    background-color: transparent;
+    background: rgba(255, 255, 255, 0.03);
     padding: 0.3rem 0.6rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: 2px;
-    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    transition: border-color 0.3s ease, color 0.3s ease;
 }
 
-/* Hover highlights */
 @media (hover: hover) {
-    .pro-product-card:hover .pro-brand-subtitle {
-        color: var(--volt-green);
-    }
-    .pro-product-card:hover .pro-size-pill {
-        border-color: var(--text-secondary);
-        color: var(--text-primary);
-    }
+    .apple-product-card:hover .apple-brand-subtitle { color: var(--volt-green); }
+    .apple-product-card:hover .apple-size-pill { border-color: rgba(255,255,255,0.3); color: var(--text-primary); }
 }
 
 /* --- Empty State --- */
-.pro-empty-state {
+.apple-empty-state {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 6rem 5%;
-    background-color: var(--surface-dark);
-    border: 1px solid var(--border-subtle);
-    border-radius: 4px;
+    padding: 8rem 5%;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 32px;
 }
+.apple-empty-state h2 { font-size: 2rem; margin: 1.5rem 0 0.5rem; letter-spacing: -1px; }
+.apple-empty-state p { color: var(--text-secondary); font-size: 1.1rem; }
+.empty-icon { opacity: 0.3; }
 
-.pro-empty-state h2 {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    letter-spacing: 1px;
-}
+/* --- Entrance Animations --- */
+.slide-up { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(30px); }
+.slide-up-delay-1 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; transform: translateY(30px); }
+.slide-up-delay-2 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; transform: translateY(30px); }
+.slide-up-delay-3 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; transform: translateY(30px); }
+@keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
-.pro-empty-state p {
-    color: var(--text-secondary);
-}
+/* --- Mobile / Tablet Responsiveness --- */
+.sidebar-header { display: none; }
+.sidebar-overlay { display: none; }
 
-/* --- Staggered Loading Animations --- */
-.pro-product-card:nth-child(1) { animation-delay: 0.1s; }
-.pro-product-card:nth-child(2) { animation-delay: 0.15s; }
-.pro-product-card:nth-child(3) { animation-delay: 0.2s; }
-.pro-product-card:nth-child(4) { animation-delay: 0.25s; }
-.pro-product-card:nth-child(5) { animation-delay: 0.3s; }
-.pro-product-card:nth-child(6) { animation-delay: 0.35s; }
-.pro-product-card:nth-child(7) { animation-delay: 0.4s; }
-.pro-product-card:nth-child(8) { animation-delay: 0.45s; }
-
-/* --- Mobile / Tablet Adjustments --- */
-@media (max-width: 768px) {
-    .pro-hero {
-        padding: 1rem 0 2rem;
+@media (max-width: 1024px) {
+    .apple-shop-container { grid-template-columns: 1fr; gap: 0; }
+    
+    .apple-filter-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 320px;
+        height: 100vh;
+        background: rgba(15, 15, 15, 0.95);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        z-index: 10000;
+        padding: 3rem 2rem;
+        border-right: 1px solid rgba(255,255,255,0.1);
+        transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
     }
     
-    .pro-product-grid {
-        /* Forces slightly smaller columns on tablets so it fits 2 side-by-side */
+    /* Hide scrollbar in mobile menu for cleaner look */
+    .apple-filter-sidebar::-webkit-scrollbar { display: none; }
+    
+    .apple-filter-sidebar.active { left: 0; }
+    
+    .sidebar-header.mobile-only {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .close-sidebar-btn { background: none; border: none; color: var(--text-primary); font-size: 2.5rem; cursor: pointer; line-height: 1; }
+    
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+        display: block;
+    }
+    
+    .sidebar-overlay.active { opacity: 1; pointer-events: all; }
+
+    .apple-product-grid {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 3rem 1rem;
-    }
-    
-    .pro-main-img {
-        padding: 1rem;
-    }
-    
-    /* Touch devices: Always show a subtle hint of the Quick View bar */
-    @media (hover: none) {
-        .pro-quick-view {
-            transform: translateY(0);
-            background-color: rgba(206, 255, 0, 0.1);
-            color: var(--volt-green);
-            backdrop-filter: blur(5px);
-            border-top: 1px solid rgba(206, 255, 0, 0.2);
-            padding: 0.8rem;
-        }
+        gap: 3rem 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
-    .pro-product-grid {
-        /* On very small phones, drop to a single large column */
-        grid-template-columns: 1fr;
+    .apple-hero { padding: 1rem 0 2rem; }
+    .apple-product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 2rem 1rem; }
+    .apple-image-glass { border-radius: 16px; margin-bottom: 1rem; }
+    .apple-main-img { padding: 1.5rem; }
+    .apple-product-name { font-size: 1.1rem; }
+}
+
+/* --- Premium Pagination --- */
+.apple-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.page-numbers {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.8rem;
+    border-radius: 980px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-link.prev-next {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: transparent;
+}
+
+@media (hover: hover) {
+    .page-link:not(.active):hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+    }
+}
+
+.page-link.active {
+    background: var(--text-primary);
+    color: var(--bg-black);
+}
+
+@media (max-width: 600px) {
+    .apple-pagination {
+        gap: 0.8rem;
+    }
+    .page-link {
+        min-width: 35px;
+        height: 35px;
+        font-size: 0.85rem;
     }
 }

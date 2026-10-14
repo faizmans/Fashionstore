@@ -1,461 +1,430 @@
-/* --- Edge-to-Edge Hero Carousel --- */
-.pro-hero-carousel {
-    position: relative;
+/* --- Ambient 3D Three.js Canvas --- */
+#kuzu-3d-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
-    height: clamp(500px, 80vh, 900px); /* Smart height scaling */
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: -2rem; 
-    background-color: var(--bg-black);
-    overflow: hidden;
-    margin-bottom: 4rem;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
 }
 
-.carousel-slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out;
+.home-content-layer {
+    position: relative;
     z-index: 1;
 }
 
-.carousel-slide.active {
-    opacity: 1;
-    z-index: 2;
+/* --- Apple Hero Carousel (Static Slider) --- */
+.apple-hero-carousel {
+    position: relative;
+    width: 100%;
+    height: clamp(450px, 75vh, 750px);
+    background-color: var(--surface-dark);
+    border-radius: 32px;
+    overflow: hidden;
+    margin: 1.5rem 0 3rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transform: translateZ(0); 
+    display: flex;
+    align-items: center; /* Centers navigation buttons vertically */
 }
 
-/* The Blurred Background (Prevents black bars) */
+/* The Sliding Track */
+.carousel-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
 .carousel-bg-blur {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(40px) brightness(0.3);
-    transform: scale(1.1); /* Prevents white edges from the blur */
-    z-index: 0;
+    filter: blur(40px) brightness(0.4);
+    transform: scale(1.2);
 }
 
-/* The Main Image (Zero cropping) */
 .carousel-main-img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Forces entire image to be visible */
-    object-position: center;
-    z-index: 1;
-    transition: transform 6s ease-out;
-}
-
-.carousel-slide.active .carousel-main-img {
-    transform: scale(1.03); /* Subtle zoom effect */
+    object-fit: contain;
 }
 
 .carousel-gradient-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, var(--bg-black) 0%, rgba(5,5,5,0.4) 30%, transparent 100%);
+    background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, transparent 60%);
     z-index: 2;
-    pointer-events: none;
 }
 
 .carousel-overlay {
     position: absolute;
-    bottom: 10%;
+    bottom: 8%;
     left: 5%;
-    z-index: 10;
+    right: 5%;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     max-width: 800px;
 }
 
-.pro-badge {
-    display: inline-block;
-    background-color: var(--volt-green);
-    color: var(--bg-black);
-    font-size: 0.8rem;
-    font-weight: 900;
-    padding: 0.3rem 0.8rem;
-    margin-bottom: 1rem;
+/* --- Left & Right Navigation Buttons --- */
+.carousel-btn {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) {
+    .carousel-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.1);
+        color: var(--volt-green);
+        border-color: rgba(206, 255, 0, 0.5);
+    }
+}
+
+.carousel-btn:active {
+    transform: scale(0.95);
+}
+
+.prev-btn { left: 2%; }
+.next-btn { right: 2%; }
+
+/* --- Mobile / Tablet Adjustments --- */
+@media (max-width: 768px) {
+    .carousel-btn {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .prev-btn { left: 15px; }
+    .next-btn { right: 15px; }
+}
+
+.apple-badge {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    padding: 0.4rem 1rem;
+    border-radius: 980px;
+    font-size: 0.75rem;
+    font-weight: 700;
     letter-spacing: 2px;
+    margin-bottom: 1.2rem;
 }
 
 .overlay-title {
-    font-family: var(--font-display);
-    font-size: clamp(3.5rem, 8vw, 8rem);
-    line-height: 0.9;
-    letter-spacing: 1px;
+    font-family: var(--font-sans);
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -2px;
     color: var(--text-primary);
     margin-bottom: 1rem;
-    text-transform: uppercase;
 }
 
-.volt-text {
-    color: var(--volt-green);
-}
+.volt-text { color: var(--volt-green); }
 
 .overlay-subtitle {
-    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-size: clamp(0.95rem, 2vw, 1.2rem);
+    font-weight: 300;
     color: var(--text-secondary);
     margin-bottom: 2rem;
-    font-weight: 500;
-    max-width: 500px;
+    max-width: 90%;
+    line-height: 1.5;
 }
 
-/* Primary Button */
-.btn-pro-primary {
-    display: inline-block;
-    background-color: var(--text-primary);
+.btn-apple-primary {
+    background-color: var(--volt-green);
     color: var(--bg-black);
-    font-family: var(--font-display);
-    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    border-radius: 980px;
+    font-size: 0.95rem;
+    font-weight: 700;
     letter-spacing: 1px;
-    padding: 1rem 2.5rem;
     text-transform: uppercase;
-    transition: all 0.3s var(--ease-power);
+    transition: all 0.3s ease;
 }
 
 @media (hover: hover) {
-    .btn-pro-primary:hover {
-        background-color: var(--volt-green);
-        transform: translateY(-3px);
+    .btn-apple-primary:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 25px rgba(206, 255, 0, 0.3);
+        background-color: #d8ff33;
     }
 }
 
-/* --- Elevated Features Section --- */
-.pro-features {
+/* --- Features Section --- */
+.apple-features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 4rem 5% 6rem;
-    border-bottom: 1px solid var(--border-subtle);
-    background-color: var(--bg-black);
-}
-
-.feature-item {
-    text-align: left; /* Shifted from center to left for a boutique editorial feel */
-    padding: 3rem 2.5rem;
-    background-color: transparent;
-    border: 1px solid var(--border-subtle);
-    border-radius: 4px;
-    transition: all 0.4s var(--ease-power);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Subtle luxury gradient sweep on hover */
-.feature-item::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(206, 255, 0, 0.05) 0%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-}
-
-@media (hover: hover) {
-    .feature-item:hover {
-        transform: translateY(-8px);
-        border-color: rgba(206, 255, 0, 0.3); /* Subtle volt highlight */
-    }
-    .feature-item:hover::before {
-        opacity: 1;
-    }
-    .feature-item:hover .feature-icon-wrapper {
-        border-color: var(--volt-green);
-        background-color: rgba(206, 255, 0, 0.1);
-    }
-}
-
-/* --- Premium Menswear Features Section --- */
-.pro-features {
-    display: grid;
-    /* Fluid grid: seamlessly adapts to any screen size */
+    /* Adapts seamlessly without bleeding off screen */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 3rem;
-    padding: 6rem 5%;
-    background-color: var(--bg-black);
-    border-bottom: 1px solid var(--border-subtle);
+    gap: 2rem;
+    padding: 4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .feature-item {
     text-align: left;
-    padding: 3rem;
+    padding: 3rem 2.5rem;
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 28px;
+    transition: transform 0.4s ease, background 0.4s ease;
 }
 
-.feature-item::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(206, 255, 0, 0.05) 0%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-}
-
-@media (hover: hover) {
-    .feature-item:hover {
-        transform: translateY(-5px);
-        border-color: rgba(206, 255, 0, 0.3);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .feature-item:hover::before {
-        opacity: 1;
-    }
-}
-
-.feature-icon-wrapper {
-    position: relative;
-    z-index: 1;
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.05);
+.feature-icon-glass {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(206, 255, 0, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 2rem;
-    border: 1px solid var(--border-subtle);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(206, 255, 0, 0.1);
 }
 
 .feature-item h3 {
-    position: relative;
-    z-index: 1;
-    font-family: var(--font-sans);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: 2px;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
 }
 
 .feature-item p {
-    position: relative;
-    z-index: 1;
     color: var(--text-secondary);
-    font-size: 1.05rem;
-    line-height: 1.7;
-    font-weight: 300;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
-/* --- Exclusive Quote Banner --- */
-.pro-quote-banner {
+/* --- Contained Quote Banner --- */
+.apple-quote-banner {
     position: relative;
-    width: 100vw;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--surface-dark);
-    padding: 8rem 5%;
+    width: 100%;
+    margin: 4rem 0;
+    padding: 6rem 5%;
     text-align: center;
-    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 32px;
+    overflow: hidden;
+}
+
+.quote-ambient-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    aspect-ratio: 1/1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(206, 255, 0, 0.04) 0%, transparent 60%);
+    pointer-events: none;
 }
 
 .quote-content {
-    max-width: 900px;
-    margin: 0 auto;
     position: relative;
+    z-index: 1;
 }
 
 .quote-mark {
     position: absolute;
-    top: -60px;
+    top: -40px;
     left: 50%;
     transform: translateX(-50%);
-    font-family: var(--font-display);
-    font-size: 10rem;
-    color: rgba(206, 255, 0, 0.04); 
+    font-family: var(--font-sans);
+    font-size: 6rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.04);
     line-height: 1;
-    z-index: 0;
-    user-select: none;
 }
 
-.pro-quote-banner h2 {
-    font-family: var(--font-sans);
-    font-size: clamp(2rem, 5vw, 4rem);
+.apple-quote-banner h2 {
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -1px;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 2rem;
-    color: var(--text-primary);
+    margin-bottom: 1.5rem;
 }
 
-.pro-quote-banner p {
-    font-size: 1rem;
+.apple-quote-banner p {
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     color: var(--text-secondary);
-    position: relative;
-    z-index: 1;
-    text-transform: uppercase;
-}
-
-/* --- Mobile Specific Tweaks --- */
-@media (max-width: 768px) {
-    .pro-features {
-        padding: 4rem 5%;
-        gap: 2rem;
-    }
-    
-    .feature-item {
-        padding: 2rem;
-    }
-
-    .pro-quote-banner {
-        padding: 5rem 5%;
-    }
 }
 
 /* --- Brand Grid --- */
-.pro-brand-categories {
-    padding: 4rem 0 2rem;
+.apple-brand-categories {
+    padding: 2rem 0 6rem;
 }
 
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.pro-section-title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 1;
-    letter-spacing: 1px;
-}
-
-.btn-view-all {
+.apple-section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
     font-weight: 700;
-    font-size: 0.9rem;
+    letter-spacing: -1px;
+}
+
+.btn-apple-view-all {
+    font-size: 0.8rem;
+    font-weight: 600;
     letter-spacing: 1px;
     color: var(--text-secondary);
-    border-bottom: 1px solid var(--text-secondary);
-    padding-bottom: 2px;
-    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-@media (hover: hover) {
-    .btn-view-all:hover {
-        color: var(--volt-green);
-        border-color: var(--volt-green);
-    }
-}
-
-.pro-brand-grid {
+.apple-brand-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
+    /* Grid fluid logic */
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 2.5rem 1.5rem;
 }
 
-.pro-brand-card {
-    display: block;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: var(--surface-dark);
+.apple-brand-card {
+    display: flex;
+    flex-direction: column;
 }
 
-.brand-image-wrapper {
+.brand-glass-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 16/12;
+    aspect-ratio: 4/5;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    margin-bottom: 1.2rem;
     overflow: hidden;
+    transform: translateZ(0);
 }
 
-.brand-image-wrapper img {
+.brand-ambient-glow {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Prevents shoe cropping */
-    padding: 2rem 2rem 4rem 2rem; /* Creates breathing room inside the box */
-    transition: transform 0.8s var(--ease-power);
+    object-fit: cover;
+    filter: blur(30px) brightness(0.3);
+    transform: scale(1.15);
+    z-index: 0;
+}
+
+.brand-main-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 2rem;
     z-index: 1;
+    transition: transform 0.6s ease;
 }
 
 .brand-fallback {
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #111, #222);
-}
-
-.brand-overlay-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, transparent 60%);
-    z-index: 2;
-}
-
-.brand-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 1.5rem;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
+    background: rgba(255,255,255,0.03);
 }
 
 .brand-info h3 {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    letter-spacing: 1px;
-    color: var(--text-primary);
-    margin-bottom: 0.2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
 }
 
 .shop-link {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--volt-green);
-    opacity: 0.8;
-    transform: translateX(0);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
-@media (hover: hover) {
-    .pro-brand-card:hover .brand-image-wrapper img {
-        transform: scale(1.05);
-    }
-    .pro-brand-card:hover .shop-link {
-        opacity: 1;
-        transform: translateX(5px);
-    }
+/* --- Slide Up Animations --- */
+.slide-up { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+.slide-up-delay-1 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; transform: translateY(20px); }
+.slide-up-delay-2 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; transform: translateY(20px); }
+.slide-up-delay-3 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; transform: translateY(20px); }
+.slide-up-delay-4 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards; opacity: 0; transform: translateY(20px); }
+
+@keyframes slideUpFade {
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Mobile Specific Tweaks --- */
+/* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
-    .pro-hero-carousel {
-        height: 70vh;
+    .apple-hero-carousel {
+        border-radius: 24px;
+        margin-top: 1rem;
+        /* Slightly shorter on phones */
+        height: 65vh; 
     }
-    
-    .carousel-overlay {
-        bottom: 5%;
-        text-align: left;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-    
-    .pro-quote-banner {
-        padding: 4rem 5%;
-    }
-    
-    .pro-brand-grid {
+
+    .apple-features {
         grid-template-columns: 1fr;
+        padding: 2rem 0;
+    }
+
+    .apple-quote-banner {
+        border-radius: 24px;
+        padding: 4rem 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .apple-brand-grid {
+        /* Adapts beautifully on smaller screens */
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.5rem 1rem;
+    }
+
+    .brand-glass-wrapper {
+        border-radius: 16px;
+    }
+    
+    .brand-main-img {
+        padding: 1rem;
+    }
+    
+    .btn-apple-primary {
+        padding: 0.9rem 1.5rem;
+        font-size: 0.85rem;
     }
 }

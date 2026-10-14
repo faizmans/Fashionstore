@@ -2,132 +2,232 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}?v=8">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}?v=26">
+    <!-- Load Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 {% endblock %}
 
 {% block content %}
-    <!-- Auto-rotating Edge-to-Edge Carousel -->
-    <section class="pro-hero-carousel">
-        {% for poster in posters %}
-            <div class="carousel-slide {% if forloop.first %}active{% endif %}">
-                <!-- Blurred background layer (prevents black bars) -->
-                <img src="{{ poster.image.url }}" alt="" class="carousel-bg-blur" loading="lazy">
-                
-                <!-- Main uncropped image -->
-                <img src="{{ poster.image.url }}" alt="{{ poster.title }}" class="carousel-main-img" loading="lazy">
-                
-                <div class="carousel-gradient-overlay"></div>
-            </div>
-        {% empty %}
-            <div class="carousel-placeholder">
-                <h2>NO CAMPAIGN LOADED</h2>
-                <p>Upload Poster Images in the Admin Panel.</p>
-            </div>
-        {% endfor %}
-        
-        <!-- Hero Overlay Text -->
-        <div class="carousel-overlay">
-            <span class="pro-badge">NEW SEASON</span>
-            <h1 class="overlay-title">DEFY <span class="volt-text">LIMITS.</span></h1>
-            <p class="overlay-subtitle">Pro-grade gear engineered for peak performance.</p>
-            <div class="hero-actions">
-                <a href="{% url 'index' %}" class="btn-pro-primary">SHOP ALL GEAR</a>
-            </div>
-        </div>
-    </section>
-<!-- Premium Menswear Details -->
-    <section class="pro-features">
-        <div class="feature-item">
-            <div class="feature-icon-wrapper">
-                <!-- Needle & Thread / Fabric Icon -->
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
-                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="16" y1="8" x2="2" y2="22" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="17.5" y1="15" x2="9" y2="15" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <h3>HERITAGE FABRICS</h3>
-            <p>Sourced from the world's finest mills. Experience the breathable comfort of premium cottons and rich, textured blends.</p>
-        </div>
-        
-        <div class="feature-item">
-            <div class="feature-icon-wrapper">
-                <!-- Tailor Scissors Icon -->
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
-                    <circle cx="6" cy="6" r="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="6" cy="18" r="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="20" y1="4" x2="8.12" y2="15.88" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="14.47" y1="14.48" x2="20" y2="20" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="8.12" y1="8.12" x2="12" y2="12" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <h3>BESPOKE TAILORING</h3>
-            <p>Every stitch is purposeful. Our menswear is cut to provide a sharp, structured fit that moves effortlessly with you.</p>
-        </div>
-        
-        <div class="feature-item">
-            <div class="feature-icon-wrapper">
-                <!-- Clean Minimalist Layout Icon -->
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="3" y1="9" x2="21" y2="9" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="9" y1="21" x2="9" y2="9" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <h3>TIMELESS DESIGN</h3>
-            <p>Elevated essentials for the modern gentleman. We create versatile pieces that form the foundation of a sophisticated wardrobe.</p>
-        </div>
-    </section>
+    <!-- Ambient 3D Digital Fabric Background -->
+    <canvas id="kuzu-3d-canvas"></canvas>
 
-    <!-- Exclusive Quote Banner -->
-    <section class="pro-quote-banner">
-        <div class="quote-content">
-            <span class="quote-mark">"</span>
-            <h2>TRUE LUXURY <span class="volt-text">WHISPERS.</span> <br>IT DOES NOT SHOUT.</h2>
-            <p>&mdash; THE KUZU FASHION HUB.</p>
-        </div>
-    </section>
-
-    <!-- Category / Brand Grid -->
-    <section class="pro-brand-categories">
-        <div class="section-header">
-            <h2 class="pro-section-title">CHOOSE YOUR <span class="volt-text">BRAND.</span></h2>
-            <a href="{% url 'index' %}" class="btn-view-all">VIEW ALL</a>
-        </div>
+    <!-- Content Wrapper -->
+    <div class="home-content-layer">
         
-        <div class="pro-brand-grid">
-            {% for brand in brands %}
-                <a href="{% url 'brand_products' brand.id %}" class="pro-brand-card">
-                    <div class="brand-image-wrapper">
-                        {% if brand.cover_image %}
-                            <img src="{{ brand.cover_image }}" alt="{{ brand.name }}" loading="lazy">
-                        {% else %}
-                            <div class="brand-fallback"></div>
-                        {% endif %}
-                        <div class="brand-overlay-gradient"></div>
+        <!-- Contained Manual Slide Carousel -->
+        <section class="apple-hero-carousel slide-up">
+            
+            <!-- Sliding Track -->
+            <div class="carousel-track" id="carouselTrack">
+                {% for poster in posters %}
+                    <div class="carousel-slide">
+                        <img src="{{ poster.image.url }}" alt="" class="carousel-bg-blur" loading="lazy" aria-hidden="true">
+                        <img src="{{ poster.image.url }}" alt="{{ poster.title }}" class="carousel-main-img" loading="lazy">
+                        <div class="carousel-gradient-overlay"></div>
                     </div>
-                    <div class="brand-info">
-                        <h3>{{ brand.name }}</h3>
-                        <span class="shop-link">SHOP BRAND &rarr;</span>
+                {% empty %}
+                    <div class="carousel-placeholder">
+                        <h2>THE ARCHIVE IS EMPTY</h2>
+                        <p>Upload campaign imagery in the Admin Panel.</p>
                     </div>
-                </a>
-            {% endfor %}
-        </div>
-    </section>
+                {% endfor %}
+            </div>
 
-    <!-- JavaScript for 5-Second Rotation -->
+            <!-- Left / Right Navigation Buttons -->
+            {% if posters|length > 1 %}
+                <button class="carousel-btn prev-btn" id="prevBtn" aria-label="Previous Poster">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="carousel-btn next-btn" id="nextBtn" aria-label="Next Poster">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            {% endif %}
+            
+            <!-- Fixed Overlay Content -->
+            <div class="carousel-overlay">
+                <span class="apple-badge slide-up-delay-1">NEW SEASON</span>
+                <h1 class="overlay-title slide-up-delay-2">DEFY <span class="volt-text">LIMITS.</span></h1>
+                <p class="overlay-subtitle slide-up-delay-3">Pro-grade menswear engineered for peak performance.</p>
+                <div class="hero-actions slide-up-delay-4">
+                    <a href="{% url 'index' %}" class="btn-apple-primary">SHOP THE CURATION</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premium Menswear Details -->
+        <section class="apple-features">
+            <div class="feature-item slide-up-delay-1">
+                <div class="feature-icon-glass">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="16" y1="8" x2="2" y2="22" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="17.5" y1="15" x2="9" y2="15" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>HERITAGE FABRICS</h3>
+                <p>Sourced from the world's finest mills. Experience the breathable comfort of premium cottons and rich, textured blends.</p>
+            </div>
+            
+            <div class="feature-item slide-up-delay-2">
+                <div class="feature-icon-glass">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                        <circle cx="6" cy="6" r="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="6" cy="18" r="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="20" y1="4" x2="8.12" y2="15.88" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="14.47" y1="14.48" x2="20" y2="20" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="8.12" y1="8.12" x2="12" y2="12" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>BESPOKE TAILORING</h3>
+                <p>Every stitch is purposeful. Our menswear is cut to provide a sharp, structured fit that moves effortlessly with you.</p>
+            </div>
+            
+            <div class="feature-item slide-up-delay-3">
+                <div class="feature-icon-glass">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--volt-green)" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="3" y1="9" x2="21" y2="9" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="9" y1="21" x2="9" y2="9" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>TIMELESS DESIGN</h3>
+                <p>Elevated essentials for the modern gentleman. We create versatile pieces that form the foundation of a sophisticated wardrobe.</p>
+            </div>
+        </section>
+
+        <!-- Exclusive Quote Banner -->
+        <section class="apple-quote-banner slide-up">
+            <div class="quote-ambient-glow"></div>
+            <div class="quote-content">
+                <span class="quote-mark">"</span>
+                <h2>TRUE LUXURY <span class="volt-text">WHISPERS.</span> <br>IT DOES NOT SHOUT.</h2>
+                <p>&mdash; THE KUZU FASHION HUB.</p>
+            </div>
+        </section>
+
+        <!-- Category / Brand Grid -->
+        <section class="apple-brand-categories">
+            <div class="section-header slide-up">
+                <h2 class="apple-section-title">CHOOSE YOUR <span class="volt-text">BRAND.</span></h2>
+                <a href="{% url 'index' %}" class="btn-apple-view-all">VIEW ALL</a>
+            </div>
+            
+            <div class="apple-brand-grid">
+                {% for brand in brands %}
+                    <a href="{% url 'brand_products' brand.id %}" class="apple-brand-card slide-up" style="--delay: {{ forloop.counter0|add:1 }}; animation-delay: calc(var(--delay) * 150ms);">
+                        <div class="brand-glass-wrapper">
+                            {% if brand.cover_image %}
+                                <img src="{{ brand.cover_image }}" alt="" class="brand-ambient-glow" loading="lazy" aria-hidden="true">
+                                <img src="{{ brand.cover_image }}" alt="{{ brand.name }}" class="brand-main-img" loading="lazy">
+                            {% else %}
+                                <div class="brand-fallback"></div>
+                            {% endif %}
+                        </div>
+                        <div class="brand-info">
+                            <h3>{{ brand.name }}</h3>
+                            <span class="shop-link">EXPLORE <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+    <!-- Interactive Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Manual Slide Carousel Logic ---
+            const track = document.getElementById('carouselTrack');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
             const slides = document.querySelectorAll('.carousel-slide');
-            if (slides.length > 1) {
-                let currentSlide = 0;
+            
+            if (track && slides.length > 1) {
+                let currentIndex = 0;
                 
-                setInterval(() => {
-                    slides[currentSlide].classList.remove('active');
-                    currentSlide = (currentSlide + 1) % slides.length;
-                    slides[currentSlide].classList.add('active');
-                }, 5000); // 5000 ms = 5 seconds
+                const updateCarousel = () => {
+                    // Smoothly slide the track left or right
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                };
+
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
+                    updateCarousel();
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
+                    updateCarousel();
+                });
             }
+
+            // --- 2. Three.js Digital Silk Fabric (Background) ---
+            const canvas = document.getElementById('kuzu-3d-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 3000);
+            camera.position.z = 600;
+            camera.position.y = 200;
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const segments = window.innerWidth < 768 ? 40 : 75; 
+            const geometry = new THREE.PlaneGeometry(3500, 3500, segments, segments);
+            const material = new THREE.PointsMaterial({ 
+                color: 0xCEFF00, 
+                size: window.innerWidth < 768 ? 1.5 : 2, 
+                transparent: true, 
+                opacity: 0.35 
+            });
+            
+            const fabricWave = new THREE.Points(geometry, material);
+            fabricWave.rotation.x = -Math.PI / 2;
+            fabricWave.position.y = -200;
+            scene.add(fabricWave);
+
+            let mouseX = 0;
+            let mouseY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) * 0.1;
+                mouseY = (event.clientY - windowHalfY) * 0.1;
+            });
+
+            let time = 0;
+            const count = geometry.attributes.position.count;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.02; 
+                const positions = geometry.attributes.position;
+                for (let i = 0; i < count; i++) {
+                    const x = positions.getX(i);
+                    const y = positions.getY(i);
+                    const waveZ = Math.sin((x * 0.003) + time) * 80 + Math.cos((y * 0.003) + time) * 80;
+                    positions.setZ(i, waveZ);
+                }
+                positions.needsUpdate = true;
+                fabricWave.rotation.z = time * 0.05;
+                camera.position.x += (mouseX - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
         });
     </script>
 {% endblock %}

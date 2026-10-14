@@ -6,7 +6,6 @@ class Brand(models.Model):
     def __str__(self):
         return self.name
 
-# 1. New Size Model
 class Size(models.Model):
     name = models.CharField(max_length=50, help_text="e.g., Small, Medium, 32 Waist")
     abbreviation = models.CharField(max_length=5, help_text="e.g., S, M, 32")
@@ -18,7 +17,6 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=200)
     
-    # 2. Updated to ManyToManyField
     sizes = models.ManyToManyField(Size, related_name='products')
     
     image = models.ImageField(upload_to='products/')
